@@ -133,16 +133,19 @@ class DisposableDomains
      *
      * @return array
      */
-    protected function getFromStorage()
+    protected function getFromStorage(): array
     {
-        $domains = is_file($this->getStoragePath())
+        $storageDomains = is_file($this->getStoragePath())
             ? file_get_contents($this->getStoragePath())
             : file_get_contents(__DIR__.'/../domains.json');
 
-        return array_diff(
-            json_decode($domains, true),
-            $this->getWhitelist()
-        );
+        $storageDomainsArray = json_decode($storageDomains, true);
+
+        // Combine the blacklist with the storage domains
+        $allDomains = array_merge($this->blacklist, $storageDomainsArray);
+
+        // Return the combined array excluding the whitelisted domains
+        return array_diff($allDomains, $this->getWhitelist());
     }
 
     /**
