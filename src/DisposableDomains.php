@@ -30,6 +30,13 @@ class DisposableDomains
     protected $whitelist = [];
 
     /**
+     * The blacklist of domains to not allow.
+     *
+     * @var array
+     */
+    protected $blacklist = [];
+
+    /**
      * The cache repository.
      *
      * @var \Illuminate\Contracts\Cache\Repository|null
@@ -235,6 +242,15 @@ class DisposableDomains
     {
         return $this->whitelist;
     }
+    /**
+     * Get the blacklist.
+     *
+     * @return array
+     */
+    public function getBlacklist()
+    {
+        return $this->blacklist;
+    }
 
     /**
      * Set the whitelist.
@@ -244,6 +260,18 @@ class DisposableDomains
     public function setWhitelist(array $whitelist)
     {
         $this->whitelist = $whitelist;
+
+        return $this;
+    }
+
+    /**
+     * Set the blacklist.
+     *
+     * @return $this
+     */
+    public function setBlacklist(array $blacklist)
+    {
+        $this->blacklist = $blacklist;
 
         return $this;
     }

@@ -58,6 +58,7 @@ class DisposableEmailServiceProvider extends ServiceProvider
             $instance->setStoragePath($app['config']['disposable-email.storage']);
             $instance->setCacheKey($app['config']['disposable-email.cache.key']);
             $instance->setWhitelist($app['config']['disposable-email.whitelist']);
+            $instance->setBlacklist($app['config']['disposable-email.blacklist']);
 
             return $instance->bootstrap();
         });
