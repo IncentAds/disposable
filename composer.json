@@ -1,10 +1,11 @@
 {
-    "name": "propaganistas/laravel-disposable-email",
+    "name": "cristianpeter/laravel-disposable-contact-guard",
     "description": "Disposable email validator",
     "keywords": [
         "laravel",
         "mail",
         "email",
+        "phone",
         "disposable",
         "throwaway",
         "temporary",
@@ -13,8 +14,8 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Propaganistas",
-            "email": "Propaganistas@users.noreply.github.com"
+            "name": "Cristian Peter",
+            "email": "horatiu@kimiagroup.com"
         }
     ],
     "require": {
@@ -35,14 +36,14 @@
     },
     "autoload": {
         "psr-4": {
-            "Propaganistas\\LaravelDisposableEmail\\": "src/",
-            "Propaganistas\\LaravelDisposableEmail\\Tests\\": "tests/"
+            "CristianPeter\\LaravelDisposableContactGuard\\": "src/",
+            "CristianPeter\\LaravelDisposableContactGuard\\Tests\\": "tests/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Propaganistas\\LaravelDisposableEmail\\DisposableEmailServiceProvider"
+                "CristianPeter\\LaravelDisposableContactGuard\\DisposableEmailServiceProvider"
             ]
         }
     },
