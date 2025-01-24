@@ -128,7 +128,7 @@ class DisposableDomains
      *
      * @return array
      */
-    public function getFromStorage(): array
+    protected function getFromStorage(): array
     {
         $domains = is_file($this->getStoragePath())
             ? file_get_contents($this->getStoragePath())
