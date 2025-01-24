@@ -5,6 +5,7 @@ namespace Propaganistas\LaravelDisposableEmail;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Psr\SimpleCache\InvalidArgumentException;
 
 class DisposableDomains
 {
@@ -13,49 +14,49 @@ class DisposableDomains
      *
      * @var string
      */
-    protected $storagePath;
+    protected string $storagePath;
 
     /**
      * Array of retrieved disposable domains.
      *
      * @var array
      */
-    protected $domains = [];
+    protected array $domains = [];
 
     /**
      * The whitelist of domains to allow.
      *
      * @var array
      */
-    protected $whitelist = [];
+    protected array $whitelist = [];
 
     /**
      * The blacklist of domains to not allow.
      *
      * @var array
      */
-    protected $blacklist = [];
+    protected array $blacklist = [];
 
     /**
      * The cache repository.
      *
-     * @var \Illuminate\Contracts\Cache\Repository|null
+     * @var Cache|null
      */
-    protected $cache;
+    protected ?Cache $cache;
 
     /**
      * The cache key.
      *
      * @var string
      */
-    protected $cacheKey;
+    protected string $cacheKey;
 
     /**
      * Whether to include subdomains.
      *
      * @var bool
      */
-    protected $includeSubdomains = false;
+    protected bool $includeSubdomains = false;
 
     /**
      * Disposable constructor.
@@ -69,8 +70,9 @@ class DisposableDomains
      * Loads the domains from cache/storage into the class.
      *
      * @return $this
+     * @throws InvalidArgumentException
      */
-    public function bootstrap()
+    public function bootstrap(): static
     {
         $domains = $this->getFromCache();
 
@@ -89,8 +91,9 @@ class DisposableDomains
      * Get the domains from cache.
      *
      * @return array|null
+     * @throws InvalidArgumentException
      */
-    protected function getFromCache()
+    protected function getFromCache(): ?array
     {
         if ($this->cache) {
             $domains = $this->cache->get($this->getCacheKey());
@@ -111,7 +114,7 @@ class DisposableDomains
     /**
      * Save the domains in cache.
      */
-    public function saveToCache(?array $domains = null)
+    public function saveToCache(?array $domains = null): void
     {
         if ($this->cache && ! empty($domains)) {
             $this->cache->forever($this->getCacheKey(), $domains);
@@ -121,11 +124,9 @@ class DisposableDomains
     /**
      * Flushes the cache if applicable.
      */
-    public function flushCache()
+    public function flushCache(): void
     {
-        if ($this->cache) {
-            $this->cache->forget($this->getCacheKey());
-        }
+        $this->cache?->forget($this->getCacheKey());
     }
 
     /**
@@ -142,7 +143,7 @@ class DisposableDomains
         $storageDomainsArray = json_decode($storageDomains, true);
 
         // Combine the blacklist with the storage domains
-        $allDomains = array_merge($this->blacklist, $storageDomainsArray);
+        $allDomains = array_merge($this->getBlacklist(), $storageDomainsArray);
 
         // Return the combined array excluding the whitelisted domains
         return array_diff($allDomains, $this->getWhitelist());
@@ -151,7 +152,7 @@ class DisposableDomains
     /**
      * Save the domains in storage.
      */
-    public function saveToStorage(array $domains)
+    public function saveToStorage(array $domains): bool|int
     {
         $saved = file_put_contents($this->getStoragePath(), json_encode($domains));
 
@@ -165,7 +166,7 @@ class DisposableDomains
     /**
      * Flushes the source's list if applicable.
      */
-    public function flushStorage()
+    public function flushStorage(): void
     {
         if (is_file($this->getStoragePath())) {
             @unlink($this->getStoragePath());
@@ -178,7 +179,7 @@ class DisposableDomains
      * @param  string  $email
      * @return bool
      */
-    public function isDisposable($email)
+    public function isDisposable($email): bool
     {
         $domain = Str::lower(Arr::get(explode('@', $email, 2), 1));
 
@@ -207,10 +208,10 @@ class DisposableDomains
     /**
      * Checks whether the given email address' domain doesn't match a disposable email service.
      *
-     * @param  string  $email
+     * @param string $email
      * @return bool
      */
-    public function isNotDisposable($email)
+    public function isNotDisposable(string $email): bool
     {
         return ! $this->isDisposable($email);
     }
@@ -218,10 +219,10 @@ class DisposableDomains
     /**
      * Alias of "isNotDisposable".
      *
-     * @param  string  $email
+     * @param string $email
      * @return bool
      */
-    public function isIndisposable($email)
+    public function isIndisposable(string $email): bool
     {
         return $this->isNotDisposable($email);
     }
@@ -231,7 +232,7 @@ class DisposableDomains
      *
      * @return array
      */
-    public function getDomains()
+    public function getDomains(): array
     {
         return $this->domains;
     }
@@ -241,7 +242,7 @@ class DisposableDomains
      *
      * @return array
      */
-    public function getWhitelist()
+    public function getWhitelist(): array
     {
         return $this->whitelist;
     }
@@ -250,7 +251,7 @@ class DisposableDomains
      *
      * @return array
      */
-    public function getBlacklist()
+    public function getBlacklist(): array
     {
         return $this->blacklist;
     }
@@ -260,7 +261,7 @@ class DisposableDomains
      *
      * @return $this
      */
-    public function setWhitelist(array $whitelist)
+    public function setWhitelist(array $whitelist): static
     {
         $this->whitelist = $whitelist;
 
@@ -272,7 +273,7 @@ class DisposableDomains
      *
      * @return $this
      */
-    public function setBlacklist(array $blacklist)
+    public function setBlacklist(array $blacklist): static
     {
         $this->blacklist = $blacklist;
 
@@ -284,7 +285,7 @@ class DisposableDomains
      *
      * @return bool
      */
-    public function getIncludeSubdomains()
+    public function getIncludeSubdomains(): bool
     {
         return $this->includeSubdomains;
     }
@@ -294,7 +295,7 @@ class DisposableDomains
      *
      * @return $this
      */
-    public function setIncludeSubdomains(bool $includeSubdomains)
+    public function setIncludeSubdomains(bool $includeSubdomains): static
     {
         $this->includeSubdomains = $includeSubdomains;
 
@@ -306,7 +307,7 @@ class DisposableDomains
      *
      * @return string
      */
-    public function getStoragePath()
+    public function getStoragePath(): string
     {
         return $this->storagePath;
     }
@@ -314,10 +315,10 @@ class DisposableDomains
     /**
      * Set the storage path.
      *
-     * @param  string  $path
+     * @param string $path
      * @return $this
      */
-    public function setStoragePath($path)
+    public function setStoragePath(string $path): static
     {
         $this->storagePath = $path;
 
@@ -329,7 +330,7 @@ class DisposableDomains
      *
      * @return string
      */
-    public function getCacheKey()
+    public function getCacheKey(): string
     {
         return $this->cacheKey;
     }
@@ -337,10 +338,10 @@ class DisposableDomains
     /**
      * Set the cache key.
      *
-     * @param  string  $key
+     * @param string $key
      * @return $this
      */
-    public function setCacheKey($key)
+    public function setCacheKey(string $key): static
     {
         $this->cacheKey = $key;
 
