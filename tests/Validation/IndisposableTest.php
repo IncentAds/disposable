@@ -1,10 +1,10 @@
 <?php
 
-namespace Propaganistas\LaravelDisposableEmail\Tests\Validation;
+namespace CristianPeter\LaravelDisposableContactGuard\Tests\Validation;
 
 use PHPUnit\Framework\Attributes\Test;
-use Propaganistas\LaravelDisposableEmail\Tests\TestCase;
-use Propaganistas\LaravelDisposableEmail\Validation\Indisposable;
+use CristianPeter\LaravelDisposableContactGuard\Tests\TestCase;
+use CristianPeter\LaravelDisposableContactGuard\Validation\Indisposable;
 
 class IndisposableTest extends TestCase
 {

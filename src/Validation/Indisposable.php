@@ -1,8 +1,8 @@
 <?php
 
-namespace Propaganistas\LaravelDisposableEmail\Validation;
+namespace CristianPeter\LaravelDisposableContactGuard\Validation;
 
-use Propaganistas\LaravelDisposableEmail\Facades\DisposableDomains;
+use CristianPeter\LaravelDisposableContactGuard\Facades\DisposableDomains;
 
 class Indisposable
 {

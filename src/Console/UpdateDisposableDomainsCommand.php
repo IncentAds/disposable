@@ -1,11 +1,11 @@
 <?php
 
-namespace Propaganistas\LaravelDisposableEmail\Console;
+namespace CristianPeter\LaravelDisposableContactGuard\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Config\Repository as Config;
-use Propaganistas\LaravelDisposableEmail\Contracts\Fetcher;
-use Propaganistas\LaravelDisposableEmail\DisposableDomains;
+use CristianPeter\LaravelDisposableContactGuard\Contracts\Fetcher;
+use CristianPeter\LaravelDisposableContactGuard\DisposableDomains;
 
 class UpdateDisposableDomainsCommand extends Command
 {

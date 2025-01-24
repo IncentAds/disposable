@@ -1,6 +1,6 @@
 <?php
 
-namespace Propaganistas\LaravelDisposableEmail\Contracts;
+namespace CristianPeter\LaravelDisposableContactGuard\Contracts;
 
 interface Fetcher
 {

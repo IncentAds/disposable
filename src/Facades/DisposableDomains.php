@@ -1,6 +1,6 @@
 <?php
 
-namespace Propaganistas\LaravelDisposableEmail\Facades;
+namespace CristianPeter\LaravelDisposableContactGuard\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Propaganistas\LaravelDisposableEmail\Tests;
+namespace CristianPeter\LaravelDisposableContactGuard\Tests;
 
 use Orchestra\Testbench\TestCase as BaseTestCase;
 
@@ -52,7 +52,7 @@ abstract class TestCase extends BaseTestCase
      */
     protected function getPackageProviders($app)
     {
-        return ['Propaganistas\LaravelDisposableEmail\DisposableEmailServiceProvider'];
+        return ['CristianPeter\LaravelDisposableContactGuard\DisposableEmailServiceProvider'];
     }
 
     /**
@@ -63,11 +63,11 @@ abstract class TestCase extends BaseTestCase
      */
     protected function getPackageAliases($app)
     {
-        return ['Indisposable' => 'Propaganistas\LaravelDisposableEmail\Facades\DisposableDomains'];
+        return ['Indisposable' => 'CristianPeter\LaravelDisposableContactGuard\Facades\DisposableDomains'];
     }
 
     /**
-     * @return \Propaganistas\LaravelDisposableEmail\DisposableDomains
+     * @return \CristianPeter\LaravelDisposableContactGuard\DisposableDomains
      */
     protected function disposable()
     {
