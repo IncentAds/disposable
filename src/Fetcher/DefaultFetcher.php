@@ -1,9 +1,9 @@
 <?php
 
-namespace Propaganistas\LaravelDisposableEmail\Fetcher;
+namespace CristianPeter\LaravelDisposableContactGuard\Fetcher;
 
 use InvalidArgumentException;
-use Propaganistas\LaravelDisposableEmail\Contracts\Fetcher;
+use CristianPeter\LaravelDisposableContactGuard\Contracts\Fetcher;
 use UnexpectedValueException;
 
 class DefaultFetcher implements Fetcher

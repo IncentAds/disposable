@@ -1,11 +1,11 @@
 <?php
 
-namespace Propaganistas\LaravelDisposableEmail\Tests\Console;
+namespace CristianPeter\LaravelDisposableContactGuard\Tests\Console;
 
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Test;
-use Propaganistas\LaravelDisposableEmail\Contracts\Fetcher;
-use Propaganistas\LaravelDisposableEmail\Tests\TestCase;
+use CristianPeter\LaravelDisposableContactGuard\Contracts\Fetcher;
+use CristianPeter\LaravelDisposableContactGuard\Tests\TestCase;
 
 class UpdateDisposableDomainsCommandTest extends TestCase
 {

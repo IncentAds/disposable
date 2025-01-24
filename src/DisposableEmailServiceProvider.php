@@ -1,11 +1,11 @@
 <?php
 
-namespace Propaganistas\LaravelDisposableEmail;
+namespace CristianPeter\LaravelDisposableContactGuard;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Factory;
-use Propaganistas\LaravelDisposableEmail\Console\UpdateDisposableDomainsCommand;
-use Propaganistas\LaravelDisposableEmail\Validation\Indisposable;
+use CristianPeter\LaravelDisposableContactGuard\Console\UpdateDisposableDomainsCommand;
+use CristianPeter\LaravelDisposableContactGuard\Validation\Indisposable;
 
 class DisposableEmailServiceProvider extends ServiceProvider
 {

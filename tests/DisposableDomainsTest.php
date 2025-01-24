@@ -1,9 +1,9 @@
 <?php
 
-namespace Propaganistas\LaravelDisposableEmail\Tests;
+namespace CristianPeter\LaravelDisposableContactGuard\Tests;
 
 use PHPUnit\Framework\Attributes\Test;
-use Propaganistas\LaravelDisposableEmail\DisposableDomains;
+use CristianPeter\LaravelDisposableContactGuard\DisposableDomains;
 
 class DisposableDomainsTest extends TestCase
 {
