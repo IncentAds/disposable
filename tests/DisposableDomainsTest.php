@@ -224,4 +224,30 @@ class DisposableDomainsTest extends TestCase
         $this->disposable()->setIncludeSubdomains(true);
         $this->assertTrue($this->disposable()->isNotDisposable('example@subdomain.yopmail.com'));
     }
+    #[Test]
+    public function it_has_domain_changed_when_blacklist_differ_domain_list()
+    {
+        $disposableDomainsMock = \Mockery::mock(DisposableDomains::class)
+            ->makePartial();
+
+        $disposableDomainsMock->shouldReceive('getDomains')->andReturn(['yopmail.com']);
+        $disposableDomainsMock->shouldReceive('getBlacklist')->once()->andReturn(['@yop.yopmail.com']);
+
+        $hasChanged = $disposableDomainsMock->hasNewBlackListItem();
+
+        $this->assertTrue($hasChanged);
+    }
+    #[Test]
+    public function it_has_not_domain_changed_when_blacklist_is_the_same_domain_list()
+    {
+        $disposableDomainsMock = \Mockery::mock(DisposableDomains::class)
+            ->makePartial();
+
+        $disposableDomainsMock->shouldReceive('getDomains')->andReturn(['yopmail.com']);
+        $disposableDomainsMock->shouldReceive('getBlacklist')->once()->andReturn(['yopmail.com']);
+
+        $hasChanged = $disposableDomainsMock->hasNewBlackListItem();
+
+        $this->assertFalse($hasChanged);
+    }
 }
