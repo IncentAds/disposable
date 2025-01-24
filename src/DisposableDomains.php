@@ -74,16 +74,10 @@ class DisposableDomains
      */
     public function bootstrap(): static
     {
-        $domains = $this->getFromCache();
-
-        if (! $domains) {
-            $this->saveToCache(
-                $domains = $this->getFromStorage()
-            );
+        $this->domains = $this->getFromCache() ?? [];
+        if (empty($this->domains) || $this->hasNewBlackListItem()) {
+            $this->domains = $this->combineSavingCache($this->getBlacklist(), $this->getFromStorage());
         }
-
-        $this->domains = $domains;
-
         return $this;
     }
 
@@ -102,13 +96,13 @@ class DisposableDomains
             if (is_string($domains) || empty($domains)) {
                 $this->flushCache();
 
-                return null;
+                return [];
             }
 
             return $domains;
         }
 
-        return null;
+        return [];
     }
 
     /**
@@ -134,19 +128,16 @@ class DisposableDomains
      *
      * @return array
      */
-    protected function getFromStorage(): array
+    public function getFromStorage(): array
     {
-        $storageDomains = is_file($this->getStoragePath())
+        $domains = is_file($this->getStoragePath())
             ? file_get_contents($this->getStoragePath())
-            : file_get_contents(__DIR__.'/../domains.json');
+            : file_get_contents(__DIR__ . '/../domains.json');
 
-        $storageDomainsArray = json_decode($storageDomains, true);
-
-        // Combine the blacklist with the storage domains
-        $allDomains = array_merge($this->getBlacklist(), $storageDomainsArray);
-
-        // Return the combined array excluding the whitelisted domains
-        return array_diff($allDomains, $this->getWhitelist());
+        return array_diff(
+            json_decode($domains, true),
+            $this->getWhitelist()
+        );
     }
 
     /**
@@ -176,7 +167,7 @@ class DisposableDomains
     /**
      * Checks whether the given email address' domain matches a disposable email service.
      *
-     * @param  string  $email
+     * @param string $email
      * @return bool
      */
     public function isDisposable($email): bool
@@ -196,7 +187,7 @@ class DisposableDomains
         if ($this->getIncludeSubdomains()) {
             // Check for subdomains.
             foreach ($this->domains as $root) {
-                if (str_ends_with($domain, '.'.$root)) {
+                if (str_ends_with($domain, '.' . $root)) {
                     return true;
                 }
             }
@@ -246,6 +237,7 @@ class DisposableDomains
     {
         return $this->whitelist;
     }
+
     /**
      * Get the blacklist.
      *
@@ -346,5 +338,26 @@ class DisposableDomains
         $this->cacheKey = $key;
 
         return $this;
+    }
+
+    /**
+     * Merge the arrays and save result in cache
+     * @param Cache $cache
+     * @param array ...$arrays
+     * @return array
+     */
+    private function combineSavingCache(array ...$arrays): array
+    {
+        $merged = array_merge(...$arrays);
+        $this->saveToCache($merged);
+        return $merged;
+    }
+
+    /**
+     * Check if new domains was added to the blacklist
+     */
+    public function hasNewBlackListItem(): bool
+    {
+        return count(array_diff($this->getBlacklist(), $this->getDomains()));
     }
 }

@@ -2,6 +2,8 @@
 
 namespace CristianPeter\LaravelDisposableContactGuard\Tests;
 
+use CristianPeter\LaravelDisposableContactGuard\DisposableDomains;
+use Illuminate\Foundation\Application;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
@@ -9,15 +11,15 @@ abstract class TestCase extends BaseTestCase
     /**
      * @var string
      */
-    protected $storagePath = __DIR__.'/domains.json';
+    protected string $storagePath = __DIR__.'/domains.json';
 
     /**
      * Define environment setup.
      *
-     * @param  \Illuminate\Foundation\Application  $app
+     * @param  Application  $app
      * @return void
      */
-    protected function getEnvironmentSetUp($app)
+    protected function getEnvironmentSetUp($app): void
     {
         $app['config']->set('disposable-email.storage', $this->storagePath);
     }
@@ -47,10 +49,10 @@ abstract class TestCase extends BaseTestCase
     /**
      * Package Service Providers
      *
-     * @param  \Illuminate\Foundation\Application  $app
+     * @param  Application  $app
      * @return array
      */
-    protected function getPackageProviders($app)
+    protected function getPackageProviders($app): array
     {
         return ['CristianPeter\LaravelDisposableContactGuard\DisposableEmailServiceProvider'];
     }
@@ -58,18 +60,18 @@ abstract class TestCase extends BaseTestCase
     /**
      * Package Aliases
      *
-     * @param  \Illuminate\Foundation\Application  $app
+     * @param  Application  $app
      * @return array
      */
-    protected function getPackageAliases($app)
+    protected function getPackageAliases($app): array
     {
         return ['Indisposable' => 'CristianPeter\LaravelDisposableContactGuard\Facades\DisposableDomains'];
     }
 
     /**
-     * @return \CristianPeter\LaravelDisposableContactGuard\DisposableDomains
+     * @return DisposableDomains
      */
-    protected function disposable()
+    protected function disposable(): DisposableDomains
     {
         return $this->app['disposable_email.domains'];
     }
