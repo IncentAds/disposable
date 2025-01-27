@@ -33,7 +33,7 @@ class UpdateDisposableDomainsCommand extends Command
         $this->line('Fetching from source...');
 
         $fetcher = $this->laravel->make(
-            $fetcherClass = $config->get('disposable-email.fetcher')
+            $fetcherClass = $config->get('disposable-guard.email.fetcher')
         );
 
         if (! $fetcher instanceof Fetcher) {
@@ -42,10 +42,10 @@ class UpdateDisposableDomainsCommand extends Command
             return Command::FAILURE;
         }
 
-        $sources = $config->get('disposable-email.sources');
+        $sources = $config->get('disposable-guard.email.sources');
 
-        if (! $sources && $config->get('disposable-email.source')) {
-            $sources = [$config->get('disposable-email.source')];
+        if (! $sources && $config->get('disposable-guard.email.source')) {
+            $sources = [$config->get('disposable-guard.email.source')];
         }
 
         if (! is_array($sources)) {

@@ -50,7 +50,7 @@ class UpdateDisposableDomainsCommandTest extends TestCase
 
         file_put_contents($this->storagePath, json_encode(['foo']));
 
-        $this->app['config']['disposable-email.sources'] = [null];
+        $this->app['config']['disposable-guard.email.sources'] = [null];
 
         $this->artisan('disposable:update')
             ->assertExitCode(1);
@@ -66,8 +66,8 @@ class UpdateDisposableDomainsCommandTest extends TestCase
     {
         file_put_contents($this->storagePath, json_encode(['foo']));
 
-        $this->app['config']['disposable-email.sources'] = ['bar'];
-        $this->app['config']['disposable-email.fetcher'] = CustomFetcher::class;
+        $this->app['config']['disposable-guard.email.sources'] = ['bar'];
+        $this->app['config']['disposable-guard.email.fetcher'] = CustomFetcher::class;
 
         $this->artisan('disposable:update')
             ->assertExitCode(0);
@@ -83,8 +83,8 @@ class UpdateDisposableDomainsCommandTest extends TestCase
     {
         file_put_contents($this->storagePath, json_encode(['foo']));
 
-        $this->app['config']['disposable-email.sources'] = ['bar'];
-        $this->app['config']['disposable-email.fetcher'] = InvalidFetcher::class;
+        $this->app['config']['disposable-guard.email.sources'] = ['bar'];
+        $this->app['config']['disposable-guard.email.fetcher'] = InvalidFetcher::class;
 
         $this->artisan('disposable:update')
             ->assertExitCode(1);
@@ -100,9 +100,9 @@ class UpdateDisposableDomainsCommandTest extends TestCase
     {
         file_put_contents($this->storagePath, json_encode(['foo']));
 
-        $this->app['config']['disposable-email.sources'] = null;
-        $this->app['config']['disposable-email.source'] = 'bar';
-        $this->app['config']['disposable-email.fetcher'] = CustomFetcher::class;
+        $this->app['config']['disposable-guard.email.sources'] = null;
+        $this->app['config']['disposable-guard.email.source'] = 'bar';
+        $this->app['config']['disposable-guard.email.fetcher'] = CustomFetcher::class;
 
         $this->artisan('disposable:update')
             ->assertExitCode(0);

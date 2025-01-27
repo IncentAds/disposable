@@ -23,7 +23,7 @@ class DisposableDomainsTest extends TestCase
     public function it_can_get_storage_path()
     {
         $this->assertEquals(
-            $this->app['config']['disposable-email.storage'],
+            $this->app['config']['disposable-guard.email.storage'],
             $this->disposable()->getStoragePath()
         );
     }
@@ -40,7 +40,7 @@ class DisposableDomainsTest extends TestCase
     public function it_can_get_include_subdomains()
     {
         $this->assertEquals(
-            $this->app['config']['disposable-email.include_subdomains'],
+            $this->app['config']['disposable-guard.email.include_subdomains'],
             $this->disposable()->getIncludeSubdomains()
         );
     }
@@ -57,7 +57,7 @@ class DisposableDomainsTest extends TestCase
     public function it_can_get_cache_key()
     {
         $this->assertEquals(
-            $this->app['config']['disposable-email.cache.key'],
+            $this->app['config']['disposable-guard.email.cache.key'],
             $this->disposable()->getCacheKey()
         );
     }
@@ -95,7 +95,7 @@ class DisposableDomainsTest extends TestCase
     #[Test]
     public function it_skips_cache_when_configured()
     {
-        $this->app['config']['disposable-email.cache.enabled'] = false;
+        $this->app['config']['disposable-guard.email.cache.enabled'] = false;
 
         $domains = $this->disposable()->getDomains();
 
@@ -107,7 +107,7 @@ class DisposableDomainsTest extends TestCase
     #[Test]
     public function it_takes_storage_domains_when_cache_is_not_available()
     {
-        $this->app['config']['disposable-email.cache.enabled'] = false;
+        $this->app['config']['disposable-guard.email.cache.enabled'] = false;
 
         file_put_contents($this->storagePath, json_encode(['foo']));
 
@@ -121,7 +121,7 @@ class DisposableDomainsTest extends TestCase
     #[Test]
     public function it_takes_package_domains_when_storage_is_not_available()
     {
-        $this->app['config']['disposable-email.cache.enabled'] = false;
+        $this->app['config']['disposable-guard.email.cache.enabled'] = false;
 
         $domains = $this->disposable()->getDomains();
 
