@@ -14,8 +14,10 @@ class NumCheckrClient implements NumCheckrClientInterface
     private const TIMEOUT = 3;
     private const RETRY_TIMES = 3;
     private const RETRY_SLEEP_MILLISECONDS = 100;
+    private string $url;
+    private string $apiKey;
 
-    public function __construct(private string $url, private string $apiKey) {
+    public function __construct() {
         $this->url = mb_trim(config('disposable-guard.integrations.numcheckr.url'));
         $this->apiKey = config('disposable-guard.integrations.numcheckr.api_key');
     }
