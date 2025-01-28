@@ -1,11 +1,12 @@
 <?php
 
-namespace CristianPeter\LaravelDisposableContactGuard\Tests;
+namespace CristianPeter\LaravelDisposableContactGuard\Tests\Mail;
 
-use PHPUnit\Framework\Attributes\Test;
 use CristianPeter\LaravelDisposableContactGuard\DisposableDomains;
+use CristianPeter\LaravelDisposableContactGuard\Tests\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
-class DisposableDomainsTest extends TestCase
+class DisposableDomainsTest extends EmailTestCase
 {
     #[Test]
     public function it_can_be_resolved_using_alias()

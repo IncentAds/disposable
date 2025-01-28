@@ -2,12 +2,14 @@
 
 namespace CristianPeter\LaravelDisposableContactGuard;
 
+use CristianPeter\LaravelDisposableContactGuard\Console\UpdateDisposableDomainsCommand;
+use CristianPeter\LaravelDisposableContactGuard\Console\UpdateDisposableNumbersCommand;
+use CristianPeter\LaravelDisposableContactGuard\Validation\IndisposableEmail;
+use CristianPeter\LaravelDisposableContactGuard\Validation\IndisposableNumber;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Factory;
-use CristianPeter\LaravelDisposableContactGuard\Console\UpdateDisposableDomainsCommand;
-use CristianPeter\LaravelDisposableContactGuard\Validation\Indisposable;
 
-class DisposableEmailServiceProvider extends ServiceProvider
+class DisposableServiceProvider extends ServiceProvider
 {
     /**
      * The config source path.
@@ -25,6 +27,7 @@ class DisposableEmailServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->commands(UpdateDisposableDomainsCommand::class);
+            $this->commands(UpdateDisposableNumbersCommand::class);
         }
 
         $this->publishes([
@@ -32,7 +35,8 @@ class DisposableEmailServiceProvider extends ServiceProvider
         ], 'laravel-disposable-guard');
 
         $this->callAfterResolving('validator', function (Factory $validator) {
-            $validator->extend('indisposable', Indisposable::class.'@validate', Indisposable::$errorMessage);
+            $validator->extend('indisposable_email', IndisposableEmail::class.'@validate', IndisposableEmail::$errorMessage);
+            $validator->extend('indisposable_number', IndisposableNumber::class.'@validate', IndisposableNumber::$errorMessage);
         });
     }
 
@@ -63,6 +67,25 @@ class DisposableEmailServiceProvider extends ServiceProvider
             return $instance->bootstrap();
         });
 
+        $this->app->singleton('disposable_phone.numbers', function ($app) {
+            // Only build and pass the requested cache store if caching is enabled.
+            if ($app['config']['disposable-guard.phone.cache.enabled']) {
+                $store = $app['config']['disposable-guard.phone.cache.store'];
+                $cache = $app['cache']->store($store == 'default' ? $app['config']['cache.default'] : $store);
+            }
+
+            $instance = new DisposableNumbers($cache ?? null);
+
+            $instance->setStoragePath($app['config']['disposable-guard.phone.storage']);
+            $instance->setCacheKey($app['config']['disposable-guard.phone.cache.key']);
+            $instance->setWhitelist($app['config']['disposable-guard.phone.whitelist']);
+            $instance->setBlacklist($app['config']['disposable-guard.phone.blacklist']);
+
+            return $instance->bootstrap();
+        });
+
         $this->app->alias('disposable_email.domains', DisposableDomains::class);
+        $this->app->alias('disposable_phone.numbers', DisposableNumbers::class);
+
     }
 }

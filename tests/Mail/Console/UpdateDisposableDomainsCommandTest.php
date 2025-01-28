@@ -1,13 +1,12 @@
 <?php
 
-namespace CristianPeter\LaravelDisposableContactGuard\Tests\Console;
+namespace CristianPeter\LaravelDisposableContactGuard\Tests\Mail\Console;
 
+use CristianPeter\LaravelDisposableContactGuard\Tests\Mail\EmailTestCase;
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Test;
-use CristianPeter\LaravelDisposableContactGuard\Contracts\Fetcher;
-use CristianPeter\LaravelDisposableContactGuard\Tests\TestCase;
 
-class UpdateDisposableDomainsCommandTest extends TestCase
+class UpdateDisposableDomainsCommandTest extends EmailTestCase
 {
     #[Test]
     public function it_creates_the_file()
@@ -114,18 +113,3 @@ class UpdateDisposableDomainsCommandTest extends TestCase
     }
 }
 
-class CustomFetcher implements Fetcher
-{
-    public function handle($url): array
-    {
-        return [$url];
-    }
-}
-
-class InvalidFetcher
-{
-    public function handle($url)
-    {
-        return $url;
-    }
-}
