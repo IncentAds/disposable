@@ -3,15 +3,16 @@
 namespace CristianPeter\LaravelDisposableContactGuard\Validation;
 
 use CristianPeter\LaravelDisposableContactGuard\Facades\DisposableDomains;
+use Illuminate\Validation\Validator;
 
-class Indisposable
+class IndisposableEmail
 {
     /**
      * Default error message.
      *
      * @var string
      */
-    public static $errorMessage = 'Disposable email addresses are not allowed.';
+    public static string $errorMessage = 'Disposable email addresses are not allowed.';
 
     /**
      * Validates whether an email address does not originate from a disposable email service.
@@ -19,10 +20,10 @@ class Indisposable
      * @param  string  $attribute
      * @param  mixed  $value
      * @param  array  $parameters
-     * @param  \Illuminate\Validation\Validator  $validator
+     * @param  Validator  $validator
      * @return bool
      */
-    public function validate($attribute, $value, $parameters, $validator)
+    public function validate($attribute, $value, $parameters, $validator): bool
     {
         return DisposableDomains::isNotDisposable($value);
     }

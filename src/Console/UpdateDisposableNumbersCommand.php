@@ -2,51 +2,54 @@
 
 namespace CristianPeter\LaravelDisposableContactGuard\Console;
 
+use CristianPeter\LaravelDisposableContactGuard\Contracts\Fetcher;
+use CristianPeter\LaravelDisposableContactGuard\DisposableNumbers;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Config\Repository as Config;
-use CristianPeter\LaravelDisposableContactGuard\Contracts\Fetcher;
-use CristianPeter\LaravelDisposableContactGuard\DisposableDomains;
+use Illuminate\Contracts\Container\BindingResolutionException;
+use Psr\SimpleCache\InvalidArgumentException;
 use Symfony\Component\Console\Command\Command as CommandAlias;
 
-class UpdateDisposableDomainsCommand extends Command
+class UpdateDisposableNumbersCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'disposable:update';
+    protected $signature = 'disposable-numbers:update';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Updates to the latest disposable email domains list';
+    protected $description = 'Updates to the latest phone numbers list';
 
     /**
      * Execute the console command.
      *
      * @return int
+     * @throws InvalidArgumentException|BindingResolutionException
      */
-    public function handle(Config $config, DisposableDomains $disposable)
+    public function handle(Config $config, DisposableNumbers $disposable)
     {
         $this->line('Fetching from source...');
 
         $fetcher = $this->laravel->make(
-            $fetcherClass = $config->get('disposable-guard.email.fetcher')
+            $fetcherClass = $config->get('disposable-guard.phone.fetcher')
         );
 
         if (! $fetcher instanceof Fetcher) {
             $this->error($fetcherClass.' should implement '.Fetcher::class);
 
-            return Command::FAILURE;
+            return CommandAlias::FAILURE;
         }
 
-        $sources = $config->get('disposable-guard.email.sources');
+        $sources = $config->get('disposable-guard.phone.sources');
 
-        if (! $sources && $config->get('disposable-guard.email.source')) {
-            $sources = [$config->get('disposable-guard.email.source')];
+        if (! $sources && $config->get('disposable-guard.phone.source')) {
+            $sources = [$config->get('disposable-guard.phone.source')];
         }
 
         if (! is_array($sources)) {
@@ -57,9 +60,11 @@ class UpdateDisposableDomainsCommand extends Command
 
         $data = [];
         foreach ($sources as $source) {
-            $data = array_merge($data, $this->laravel->call([$fetcher, 'handle'], [
-                'url' => $source,
-            ]));
+            $data = array_merge($data, array_keys(
+                $this->laravel->call([$fetcher, 'handle'], [
+                    'url' => $source,
+                ])
+            ));
         }
 
         $this->line('Saving response to storage...');

@@ -1,12 +1,12 @@
 <?php
 
-namespace CristianPeter\LaravelDisposableContactGuard\Fetcher;
+namespace CristianPeter\LaravelDisposableContactGuard\Fetcher\email;
 
-use InvalidArgumentException;
 use CristianPeter\LaravelDisposableContactGuard\Contracts\Fetcher;
+use InvalidArgumentException;
 use UnexpectedValueException;
 
-class DefaultFetcher implements Fetcher
+class DefaultEmailFetcher implements Fetcher
 {
     public function handle($url): array
     {
