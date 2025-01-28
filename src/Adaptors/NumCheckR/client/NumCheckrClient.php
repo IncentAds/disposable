@@ -15,15 +15,11 @@ class NumCheckrClient implements NumCheckrClientInterface
     private const RETRY_TIMES = 3;
     private const RETRY_SLEEP_MILLISECONDS = 100;
 
-    public function __construct(private readonly string $url, private readonly string $apiKey) {}
-
-    public static function make(): self
-    {
-        return new self(
-            url: mb_trim(config('disposable-guard.integrations.numcheckr.url')),
-            apiKey: config('disposable-guard.integrations.numcheckr.api_key'),
-        );
+    public function __construct(private string $url, private string $apiKey) {
+        $this->url = mb_trim(config('disposable-guard.integrations.numcheckr.url'));
+        $this->apiKey = config('disposable-guard.integrations.numcheckr.api_key');
     }
+
     public function post(array $data): array
     {
        return $this->send('post', $this->url ,$data);
