@@ -35,5 +35,11 @@ return [
             'store' => 'default',
             'key' => 'disposable_phone:numbers',
         ],
+    ],
+    'integrations' => [
+        'numcheckr' =>  [
+            'url' => env('NUMCHECKR_URL', 'https://numcheckr.com/api/check-number'),
+            'api_key' => env('NUMCHECKR_API_KEY', ''),
+        ]
     ]
 ];
