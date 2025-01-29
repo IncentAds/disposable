@@ -12,7 +12,7 @@ class DisposableNumbers
     use HasCache;
     use HandleStorage;
 
-    const string FALLBACK_LOCATION =  __DIR__ . '/../numbers.json';
+    const string FALLBACK_LOCATION =  __DIR__ . '/../disposable_numbers.json';
 
     /**
      * The storage path to retrieve from and save to.

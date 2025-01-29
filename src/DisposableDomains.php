@@ -15,7 +15,7 @@ class DisposableDomains
     use HasCache;
     use HandleStorage;
 
-    const string FALLBACK_LOCATION =  __DIR__ . '/../domains.json';
+    const string FALLBACK_LOCATION =  __DIR__ . '/../disposable_domains.json';
     /**
      * The storage path to retrieve from and save to.
      *

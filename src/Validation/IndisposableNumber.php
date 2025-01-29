@@ -27,6 +27,6 @@ class IndisposableNumber
      */
     public function validate($attribute, $value, $parameters, $validator): bool
     {
-        return app(PhoneDecisionNode::class)->handle($value);
+        return ! app(PhoneDecisionNode::class)->handle($value);
     }
 }
