@@ -60,11 +60,10 @@ class UpdateDisposableNumbersCommand extends Command
 
         $data = [];
         foreach ($sources as $source) {
-            $data = array_merge($data, array_keys(
-                $this->laravel->call([$fetcher, 'handle'], [
+            $data = array_merge($data, $this->laravel->call([$fetcher, 'handle'], [
                     'url' => $source,
                 ])
-            ));
+            );
         }
 
         $this->line('Saving response to storage...');
