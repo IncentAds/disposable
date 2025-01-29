@@ -37,7 +37,7 @@ class DisposableServiceProvider extends ServiceProvider
 
         $this->callAfterResolving('validator', function (Factory $validator) {
             $validator->extend('indisposable', IndisposableEmail::class.'@validate', IndisposableEmail::$errorMessage);
-            $validator->extend('indisposable-number', IndisposableNumber::class.'@validate', IndisposableNumber::$errorMessage);
+            $validator->extend('real_phone', IndisposableNumber::class.'@validate', IndisposableNumber::$errorMessage);
         });
     }
 
