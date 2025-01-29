@@ -1,6 +1,6 @@
 <?php
 
-namespace CristianPeter\LaravelDisposableContactGuard\Adaptors\NumCheckR\client;
+namespace CristianPeter\LaravelDisposableContactGuard\Integrations\NumCheckR\Client;
 
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\PendingRequest;
@@ -25,6 +25,11 @@ class NumCheckrClient implements NumCheckrClientInterface
     public function post(array $data): array
     {
        return $this->send('post', $this->url ,$data);
+    }
+
+    public function isDisposable(string $number): bool
+    {
+        return $this->send('post', $this->url , ['phone' => $number])['is_disposable'];
     }
 
     private function send(string $method, string $url, ?array $data): array
@@ -54,10 +59,5 @@ class NumCheckrClient implements NumCheckrClientInterface
             ->withToken($this->apiKey)
             ->timeout(self::TIMEOUT)
             ->retry(self::RETRY_TIMES, self::RETRY_SLEEP_MILLISECONDS);
-    }
-
-    public function isDisposable(string $number): bool
-    {
-         return $this->send('post', $this->url , ['number' => $number])['is_disposable'];
     }
 }

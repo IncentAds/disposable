@@ -2,8 +2,8 @@
 
 namespace CristianPeter\LaravelDisposableContactGuard\Console;
 
-use CristianPeter\LaravelDisposableContactGuard\Contracts\Fetcher;
 use CristianPeter\LaravelDisposableContactGuard\DisposableNumbers;
+use CristianPeter\LaravelDisposableContactGuard\Fetcher\Fetcher;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Config\Repository as Config;
 use Illuminate\Contracts\Container\BindingResolutionException;

@@ -2,10 +2,10 @@
 
 namespace CristianPeter\LaravelDisposableContactGuard\Console;
 
+use CristianPeter\LaravelDisposableContactGuard\DisposableDomains;
+use CristianPeter\LaravelDisposableContactGuard\Fetcher\Fetcher;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Config\Repository as Config;
-use CristianPeter\LaravelDisposableContactGuard\Contracts\Fetcher;
-use CristianPeter\LaravelDisposableContactGuard\DisposableDomains;
 use Symfony\Component\Console\Command\Command as CommandAlias;
 
 class UpdateDisposableDomainsCommand extends Command

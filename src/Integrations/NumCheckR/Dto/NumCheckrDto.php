@@ -1,6 +1,6 @@
 <?php
 
-namespace CristianPeter\LaravelDisposableContactGuard\Adaptors\NumCheckR\Dto;
+namespace CristianPeter\LaravelDisposableContactGuard\Integrations\NumCheckR\Dto;
 
 class NumCheckrDto
 {

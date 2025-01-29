@@ -1,6 +1,6 @@
 <?php
 
-namespace CristianPeter\LaravelDisposableContactGuard\Adaptors\NumCheckR\client;
+namespace CristianPeter\LaravelDisposableContactGuard\Integrations\NumCheckR\Client;
 
 interface NumCheckrClientInterface
 {

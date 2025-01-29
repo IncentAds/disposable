@@ -3,7 +3,6 @@
 namespace CristianPeter\LaravelDisposableContactGuard\Tests\Mail\Validation;
 
 use CristianPeter\LaravelDisposableContactGuard\Tests\Mail\EmailTestCase;
-use CristianPeter\LaravelDisposableContactGuard\Tests\TestCase;
 use CristianPeter\LaravelDisposableContactGuard\Validation\IndisposableEmail;
 use PHPUnit\Framework\Attributes\Test;
 

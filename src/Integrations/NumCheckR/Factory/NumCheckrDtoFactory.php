@@ -1,8 +1,8 @@
 <?php
 
-namespace CristianPeter\LaravelDisposableContactGuard\Adaptors\NumCheckR\Factory;
+namespace CristianPeter\LaravelDisposableContactGuard\Integrations\NumCheckR\Factory;
 
-use CristianPeter\LaravelDisposableContactGuard\Adaptors\NumCheckR\Dto\NumCheckrDto;
+use CristianPeter\LaravelDisposableContactGuard\Integrations\NumCheckR\Dto\NumCheckrDto;
 
 class NumCheckrDtoFactory
 {

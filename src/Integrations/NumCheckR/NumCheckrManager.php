@@ -1,12 +1,12 @@
 <?php
 
-namespace CristianPeter\LaravelDisposableContactGuard\Adaptors\NumCheckR;
+namespace CristianPeter\LaravelDisposableContactGuard\Integrations\NumCheckR;
 
-use CristianPeter\LaravelDisposableContactGuard\Adaptors\NumCheckR\client\NumCheckrClient;
-use CristianPeter\LaravelDisposableContactGuard\Adaptors\NumCheckR\Dto\NumCheckrDto;
-use CristianPeter\LaravelDisposableContactGuard\Adaptors\NumCheckR\Factory\NumCheckrDtoFactory;
+use CristianPeter\LaravelDisposableContactGuard\Integrations\NumCheckR\Client\NumCheckrClient;
+use CristianPeter\LaravelDisposableContactGuard\Integrations\NumCheckR\Dto\NumCheckrDto;
+use CristianPeter\LaravelDisposableContactGuard\Integrations\NumCheckR\Factory\NumCheckrDtoFactory;
 
-class NumCheckManager implements NumCheckrApiInterface
+class NumCheckrManager implements NumCheckrApiInterface
 {
     public function __construct(private readonly NumCheckrClient $client, private readonly NumCheckrDtoFactory $factory)
     {

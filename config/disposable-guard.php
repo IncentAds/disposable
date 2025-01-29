@@ -27,7 +27,7 @@ return [
             'https://raw.githubusercontent.com/tagmood/Laravel-Disposable-Phone/refs/heads/master/number-list.json',
         ],
         'fetcher' => DefaultPhoneFetcher::class,
-        'storage' => storage_path('framework/disposable_phone_numbers.json'),
+        'storage' => storage_path('framework/numbers.json'),
         'whitelist' => [],
         'blacklist' => [],
         'cache' => [

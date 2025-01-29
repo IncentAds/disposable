@@ -2,7 +2,6 @@
 
 namespace CristianPeter\LaravelDisposableContactGuard\Tests\Phone;
 
-use CristianPeter\LaravelDisposableContactGuard\DisposableDomains;
 use CristianPeter\LaravelDisposableContactGuard\DisposableNumbers;
 use CristianPeter\LaravelDisposableContactGuard\Tests\TestCase;
 use Illuminate\Foundation\Application;

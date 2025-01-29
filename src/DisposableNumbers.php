@@ -2,13 +2,18 @@
 
 namespace CristianPeter\LaravelDisposableContactGuard;
 
+use CristianPeter\LaravelDisposableContactGuard\Cache\HasCache;
+use CristianPeter\LaravelDisposableContactGuard\Utils\HandleStorage;
 use Illuminate\Contracts\Cache\Repository as Cache;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use Psr\SimpleCache\InvalidArgumentException;
 
 class DisposableNumbers
 {
+    use HasCache;
+    use HandleStorage;
+
+    const string FALLBACK_LOCATION =  __DIR__ . '/../numbers.json';
+
     /**
      * The storage path to retrieve from and save to.
      *
@@ -68,94 +73,11 @@ class DisposableNumbers
      */
     public function bootstrap(): static
     {
-        $this->numbers = $this->getFromCache() ?? [];
+        $this->numbers = $this->getFromCache($this->cacheKey) ?? [];
         if (empty($this->numbers) || $this->hasNewBlackListItem()) {
             $this->numbers = $this->combineSavingCache($this->getBlacklist(), $this->getFromStorage());
         }
         return $this;
-    }
-
-    /**
-     * Get the domains from cache.
-     *
-     * @return array|null
-     * @throws InvalidArgumentException
-     */
-    protected function getFromCache(): ?array
-    {
-        if ($this->cache) {
-            $domains = $this->cache->get($this->getCacheKey());
-
-            // @TODO: Legacy code for bugfix. Remove me.
-            if (is_string($domains) || empty($domains)) {
-                $this->flushCache();
-
-                return [];
-            }
-
-            return $domains;
-        }
-
-        return [];
-    }
-
-    /**
-     * Save the numbers in cache.
-     */
-    public function saveToCache(?array $domains = null): void
-    {
-        if ($this->cache && ! empty($domains)) {
-            $this->cache->forever($this->getCacheKey(), $domains);
-        }
-    }
-
-    /**
-     * Flushes the cache if applicable.
-     */
-    public function flushCache(): void
-    {
-        $this->cache?->forget($this->getCacheKey());
-    }
-
-    /**
-     * Get the numbers from storage, or if non-existent, from the package.
-     *
-     * @return array
-     */
-    protected function getFromStorage(): array
-    {
-        $domains = is_file($this->getStoragePath())
-            ? file_get_contents($this->getStoragePath())
-            : file_get_contents(__DIR__ . '/../domains.json');
-
-        return array_diff(
-            json_decode($domains, true),
-            $this->getWhitelist()
-        );
-    }
-
-    /**
-     * Save the domains in storage.
-     */
-    public function saveToStorage(array $numbers): bool|int
-    {
-        $saved = file_put_contents($this->getStoragePath(), json_encode($numbers));
-
-        if ($saved) {
-            $this->flushCache();
-        }
-
-        return $saved;
-    }
-
-    /**
-     * Flushes the source's list if applicable.
-     */
-    public function flushStorage(): void
-    {
-        if (is_file($this->getStoragePath())) {
-            @unlink($this->getStoragePath());
-        }
     }
 
     /**
@@ -164,7 +86,7 @@ class DisposableNumbers
      * @param string $number
      * @return bool
      */
-    public function isDisposable($number): bool
+    public function isDisposable(string $number): bool
     {
         if (! $number) {
             return false;
@@ -179,7 +101,7 @@ class DisposableNumbers
     /**
      * Checks whether the given email address' domain doesn't match a disposable email service.
      *
-     * @param string $email
+     * @param string $number
      * @return bool
      */
     public function isNotDisposable(string $number): bool
@@ -306,7 +228,7 @@ class DisposableNumbers
     private function combineSavingCache(array ...$arrays): array
     {
         $merged = array_merge(...$arrays);
-        $this->saveToCache($merged);
+        $this->saveToCache($this->cacheKey, $merged);
         return $merged;
     }
 

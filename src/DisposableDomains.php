@@ -2,13 +2,20 @@
 
 namespace CristianPeter\LaravelDisposableContactGuard;
 
+use CristianPeter\LaravelDisposableContactGuard\Cache\HasCache;
+use CristianPeter\LaravelDisposableContactGuard\Utils\HandleStorage;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Psr\SimpleCache\CacheInterface;
 use Psr\SimpleCache\InvalidArgumentException;
 
 class DisposableDomains
 {
+    use HasCache;
+    use HandleStorage;
+
+    const string FALLBACK_LOCATION =  __DIR__ . '/../domains.json';
     /**
      * The storage path to retrieve from and save to.
      *
@@ -58,10 +65,7 @@ class DisposableDomains
      */
     protected bool $includeSubdomains = false;
 
-    /**
-     * Disposable constructor.
-     */
-    public function __construct(?Cache $cache = null)
+    public function __construct(?CacheInterface $cache = null)
     {
         $this->cache = $cache;
     }
@@ -74,94 +78,11 @@ class DisposableDomains
      */
     public function bootstrap(): static
     {
-        $this->domains = $this->getFromCache() ?? [];
+        $this->domains = $this->getFromCache($this->cacheKey) ?? [];
         if (empty($this->domains) || $this->hasNewBlackListItem()) {
             $this->domains = $this->combineSavingCache($this->getBlacklist(), $this->getFromStorage());
         }
         return $this;
-    }
-
-    /**
-     * Get the domains from cache.
-     *
-     * @return array|null
-     * @throws InvalidArgumentException
-     */
-    protected function getFromCache(): ?array
-    {
-        if ($this->cache) {
-            $domains = $this->cache->get($this->getCacheKey());
-
-            // @TODO: Legacy code for bugfix. Remove me.
-            if (is_string($domains) || empty($domains)) {
-                $this->flushCache();
-
-                return [];
-            }
-
-            return $domains;
-        }
-
-        return [];
-    }
-
-    /**
-     * Save the domains in cache.
-     */
-    public function saveToCache(?array $domains = null): void
-    {
-        if ($this->cache && ! empty($domains)) {
-            $this->cache->forever($this->getCacheKey(), $domains);
-        }
-    }
-
-    /**
-     * Flushes the cache if applicable.
-     */
-    public function flushCache(): void
-    {
-        $this->cache?->forget($this->getCacheKey());
-    }
-
-    /**
-     * Get the domains from storage, or if non-existent, from the package.
-     *
-     * @return array
-     */
-    protected function getFromStorage(): array
-    {
-        $domains = is_file($this->getStoragePath())
-            ? file_get_contents($this->getStoragePath())
-            : file_get_contents(__DIR__ . '/../domains.json');
-
-        return array_diff(
-            json_decode($domains, true),
-            $this->getWhitelist()
-        );
-    }
-
-    /**
-     * Save the domains in storage.
-     */
-    public function saveToStorage(array $domains): bool|int
-    {
-        $saved = file_put_contents($this->getStoragePath(), json_encode($domains));
-
-        if ($saved) {
-            $this->flushCache();
-        }
-
-        return $saved;
-    }
-
-    /**
-     * Flushes the source's list if applicable.
-     */
-    public function flushStorage(): void
-    {
-        if (is_file($this->getStoragePath())) {
-            @unlink($this->getStoragePath());
-        }
     }
 
     /**
@@ -342,14 +263,13 @@ class DisposableDomains
 
     /**
      * Merge the arrays and save result in cache
-     * @param Cache $cache
      * @param array ...$arrays
      * @return array
      */
     private function combineSavingCache(array ...$arrays): array
     {
         $merged = array_merge(...$arrays);
-        $this->saveToCache($merged);
+        $this->saveToCache($this->cacheKey, $merged);
         return $merged;
     }
 
