@@ -3,7 +3,6 @@
 namespace CristianPeter\LaravelDisposableContactGuard\Tests\Mail;
 
 use CristianPeter\LaravelDisposableContactGuard\DisposableDomains;
-use CristianPeter\LaravelDisposableContactGuard\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
 class DisposableDomainsTest extends EmailTestCase

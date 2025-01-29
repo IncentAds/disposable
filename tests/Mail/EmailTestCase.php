@@ -5,7 +5,6 @@ namespace CristianPeter\LaravelDisposableContactGuard\Tests\Mail;
 use CristianPeter\LaravelDisposableContactGuard\DisposableDomains;
 use CristianPeter\LaravelDisposableContactGuard\Tests\TestCase;
 use Illuminate\Foundation\Application;
-use Orchestra\Testbench\TestCase as BaseTestCase;
 
 abstract class EmailTestCase extends TestCase
 {

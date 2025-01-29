@@ -1,8 +1,8 @@
 <?php
 
-namespace CristianPeter\LaravelDisposableContactGuard\Tests\mail\Console;
+namespace CristianPeter\LaravelDisposableContactGuard\Tests\Mail\Console;
 
-use CristianPeter\LaravelDisposableContactGuard\Contracts\Fetcher;
+use CristianPeter\LaravelDisposableContactGuard\Fetcher\Fetcher;
 
 class CustomFetcher implements Fetcher
 {

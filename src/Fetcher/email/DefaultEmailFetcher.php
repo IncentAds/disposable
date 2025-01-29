@@ -2,7 +2,7 @@
 
 namespace CristianPeter\LaravelDisposableContactGuard\Fetcher\email;
 
-use CristianPeter\LaravelDisposableContactGuard\Contracts\Fetcher;
+use CristianPeter\LaravelDisposableContactGuard\Fetcher\Fetcher;
 use InvalidArgumentException;
 use UnexpectedValueException;
 

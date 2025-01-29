@@ -2,8 +2,8 @@
 
 namespace CristianPeter\LaravelDisposableContactGuard\Console;
 
-use CristianPeter\LaravelDisposableContactGuard\Contracts\Fetcher;
 use CristianPeter\LaravelDisposableContactGuard\DisposableNumbers;
+use CristianPeter\LaravelDisposableContactGuard\Fetcher\Fetcher;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Config\Repository as Config;
 use Illuminate\Contracts\Container\BindingResolutionException;
@@ -60,11 +60,10 @@ class UpdateDisposableNumbersCommand extends Command
 
         $data = [];
         foreach ($sources as $source) {
-            $data = array_merge($data, array_keys(
-                $this->laravel->call([$fetcher, 'handle'], [
+            $data = array_merge($data, $this->laravel->call([$fetcher, 'handle'], [
                     'url' => $source,
                 ])
-            ));
+            );
         }
 
         $this->line('Saving response to storage...');

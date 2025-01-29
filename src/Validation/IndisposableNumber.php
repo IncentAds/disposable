@@ -2,7 +2,8 @@
 
 namespace CristianPeter\LaravelDisposableContactGuard\Validation;
 
-use CristianPeter\LaravelDisposableContactGuard\Facades\DisposableNumbers;
+use CristianPeter\LaravelDisposableContactGuard\Core\Phone\PhoneDecisionNode;
+use Exception;
 use Illuminate\Validation\Validator;
 
 class IndisposableNumber
@@ -17,14 +18,15 @@ class IndisposableNumber
     /**
      * Validates whether a phone number does not originate from a disposable number service.
      *
-     * @param  string  $attribute
-     * @param  mixed  $value
-     * @param  array  $parameters
-     * @param  Validator  $validator
+     * @param string $attribute
+     * @param mixed $value
+     * @param array $parameters
+     * @param Validator $validator
      * @return bool
+     * @throws Exception
      */
     public function validate($attribute, $value, $parameters, $validator): bool
     {
-        return DisposableNumbers::isNotDisposable($value);
+        return app(PhoneDecisionNode::class)->handle($value);
     }
 }
