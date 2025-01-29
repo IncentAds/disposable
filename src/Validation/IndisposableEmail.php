@@ -2,7 +2,7 @@
 
 namespace CristianPeter\LaravelDisposableContactGuard\Validation;
 
-use CristianPeter\LaravelDisposableContactGuard\Facades\DisposableDomains;
+use CristianPeter\LaravelDisposableContactGuard\Core\AdaptorDecisionNode;
 use Illuminate\Validation\Validator;
 
 class IndisposableEmail
@@ -25,6 +25,6 @@ class IndisposableEmail
      */
     public function validate($attribute, $value, $parameters, $validator): bool
     {
-        return DisposableDomains::isNotDisposable($value);
+        return app(AdaptorDecisionNode::class)->handle($value);
     }
 }

@@ -4,15 +4,13 @@ namespace CristianPeter\LaravelDisposableContactGuard\Core;
 
 class AdaptorDecisionNode extends AbstractDecisionNode
 {
-    protected int $retries = 1;
-
-    protected function resolve(): void
+    public function handle($state): mixed
     {
-        $this->handle();
+        return $this->resolve($state);
     }
 
-    protected function validate($result): bool
+    protected function validate(mixed $result): bool
     {
-        return true;
+        return ! is_null($result);
     }
 }

@@ -4,6 +4,9 @@ namespace CristianPeter\LaravelDisposableContactGuard;
 
 use CristianPeter\LaravelDisposableContactGuard\Console\UpdateDisposableDomainsCommand;
 use CristianPeter\LaravelDisposableContactGuard\Console\UpdateDisposableNumbersCommand;
+use CristianPeter\LaravelDisposableContactGuard\Core\AdaptorDecisionNode;
+use CristianPeter\LaravelDisposableContactGuard\Core\Nodes\NumcheckrNode;
+use CristianPeter\LaravelDisposableContactGuard\Core\Nodes\StoragableListNode;
 use CristianPeter\LaravelDisposableContactGuard\Validation\IndisposableEmail;
 use CristianPeter\LaravelDisposableContactGuard\Validation\IndisposableNumber;
 use Illuminate\Support\ServiceProvider;
@@ -51,6 +54,12 @@ class DisposableServiceProvider extends ServiceProvider
 
         $this->bindDisposableService('disposable_email.domains', DisposableDomains::class, 'email');
         $this->bindDisposableService('disposable_phone.numbers', DisposableNumbers::class, 'phone');
+
+        $this->app->singleton(AdaptorDecisionNode::class, function ($app) {
+            $then = new NumcheckrNode();
+            $otherwise = new StoragableListNode();
+            return new AdaptorDecisionNode($then, $otherwise);
+        });
     }
 
     private function bindDisposableService(string $key, string $class, string $configKey): void
