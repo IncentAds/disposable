@@ -4,7 +4,7 @@ namespace CristianPeter\LaravelDisposableContactGuard;
 
 use CristianPeter\LaravelDisposableContactGuard\Console\UpdateDisposableDomainsCommand;
 use CristianPeter\LaravelDisposableContactGuard\Console\UpdateDisposableNumbersCommand;
-use CristianPeter\LaravelDisposableContactGuard\Core\PhoneDecisionNode;
+use CristianPeter\LaravelDisposableContactGuard\Core\Phone\PhoneDecisionNode;
 use CristianPeter\LaravelDisposableContactGuard\Validation\IndisposableEmail;
 use CristianPeter\LaravelDisposableContactGuard\Validation\IndisposableNumber;
 use Illuminate\Support\ServiceProvider;

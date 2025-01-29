@@ -2,7 +2,7 @@
 
 namespace CristianPeter\LaravelDisposableContactGuard\Validation;
 
-use CristianPeter\LaravelDisposableContactGuard\Core\PhoneDecisionNode;
+use CristianPeter\LaravelDisposableContactGuard\Core\Phone\PhoneDecisionNode;
 use Exception;
 use Illuminate\Validation\Validator;
 
@@ -27,6 +27,6 @@ class IndisposableNumber
      */
     public function validate($attribute, $value, $parameters, $validator): bool
     {
-        return ! app(PhoneDecisionNode::class)->handle($value);
+        return app(PhoneDecisionNode::class)->handle($value);
     }
 }

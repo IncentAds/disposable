@@ -1,7 +1,7 @@
 <?php
 
-use CristianPeter\LaravelDisposableContactGuard\Core\Nodes\NumcheckrNode;
-use CristianPeter\LaravelDisposableContactGuard\Core\Nodes\StoragableListNode;
+use CristianPeter\LaravelDisposableContactGuard\Core\Phone\Nodes\NumcheckrAdaptorNode;
+use CristianPeter\LaravelDisposableContactGuard\Core\Phone\Nodes\StoragableListAdaptorNode;
 use CristianPeter\LaravelDisposableContactGuard\Fetcher\email\DefaultEmailFetcher;
 use CristianPeter\LaravelDisposableContactGuard\Fetcher\phone\DefaultPhoneFetcher;
 
@@ -44,8 +44,8 @@ return [
         ]
     ],
     'nodes' => [
-        StoragableListNode::class,
-        NumcheckrNode::class,
+        StoragableListAdaptorNode::class,
+        NumcheckrAdaptorNode::class,
     ],
 
 ];

@@ -8,6 +8,6 @@ interface NumCheckrApiInterface
 {
     public function info(string $number): NumCheckrDto;
 
-    public function isDisposable(string $number): bool;
+    public function isNotDisposable(string $number): bool;
 
 }

@@ -1,22 +1,20 @@
 <?php
 
-namespace CristianPeter\LaravelDisposableContactGuard\Core\Nodes;
+namespace CristianPeter\LaravelDisposableContactGuard\Core\Phone\Nodes;
 
 use CristianPeter\LaravelDisposableContactGuard\Integrations\NumCheckR\Exceptions\ApiErrorException;
 use CristianPeter\LaravelDisposableContactGuard\Integrations\NumCheckR\NumCheckrManager;
 use Illuminate\Http\Client\ConnectionException;
 
-class NumcheckrNode implements DecisionNode
+class NumcheckrAdaptorNode implements PhoneAdaptorNode
 {
     /**
      * @throws ApiErrorException
      * @throws ConnectionException
      */
-    public function handle(mixed $state): mixed
+    public function isNotDisposable(mixed $number): bool
     {
         $manager = app(NumCheckrManager::class);
-        return $manager->isDisposable($state);
+        return $manager->isNotDisposable($number);
     }
-
-
 }

@@ -28,9 +28,9 @@ final readonly class NumCheckrManager implements NumCheckrApiInterface
      * @throws ApiErrorException
      * @throws ConnectionException
      */
-    public function isDisposable(string $number):bool
+    public function isNotDisposable(string $number):bool
     {
-        return $this->client->isDisposable($number);
+        return ! $this->client->isDisposable($number);
     }
 
 
