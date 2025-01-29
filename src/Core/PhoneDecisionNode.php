@@ -2,7 +2,7 @@
 
 namespace CristianPeter\LaravelDisposableContactGuard\Core;
 
-class AdaptorDecisionNode extends AbstractDecisionNode
+class PhoneDecisionNode extends AbstractDecisionNode
 {
     public function handle($state): mixed
     {
@@ -11,6 +11,6 @@ class AdaptorDecisionNode extends AbstractDecisionNode
 
     protected function validate(mixed $result): bool
     {
-        return ! is_null($result);
+        return $result === true;
     }
 }

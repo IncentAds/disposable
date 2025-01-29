@@ -1,36 +1,30 @@
 <?php
 
 namespace CristianPeter\LaravelDisposableContactGuard\Core;
-use CristianPeter\LaravelDisposableContactGuard\Core\Nodes\DecisionNode;
 use Illuminate\Support\Facades\Log;
 
 abstract class AbstractDecisionNode
 {
-    protected int $retries = 1;
-    protected int $timeout = 300;
-
-    public function __construct(private readonly DecisionNode $then, private readonly DecisionNode $otherwise)
+    public function __construct(private readonly array $nodes)
     {
     }
 
     public function resolve(mixed $state): mixed
     {
-        while ($this->retries-- > 0) {
+        foreach ($this->nodes as $node) {
             try {
-                $result = $this->then->handle($state);
+                $result = $node->handle($state);
 
                 if ($this->validate($result)) {
                     return $result;
                 }
             } catch (\Throwable $e) {
-                Log::error("Error on node: " . $this->then->key(), [
+                Log::error("Error on node: " . get_class($node), [
                     'exception' => $e,
-                    'retries_left' => $this->retries
                 ]);
             }
         }
-
-        return $this->otherwise->handle($state);
+        return false;
     }
 
     abstract public function handle(mixed $state): mixed;

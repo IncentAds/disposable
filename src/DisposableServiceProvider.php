@@ -4,9 +4,7 @@ namespace CristianPeter\LaravelDisposableContactGuard;
 
 use CristianPeter\LaravelDisposableContactGuard\Console\UpdateDisposableDomainsCommand;
 use CristianPeter\LaravelDisposableContactGuard\Console\UpdateDisposableNumbersCommand;
-use CristianPeter\LaravelDisposableContactGuard\Core\AdaptorDecisionNode;
-use CristianPeter\LaravelDisposableContactGuard\Core\Nodes\NumcheckrNode;
-use CristianPeter\LaravelDisposableContactGuard\Core\Nodes\StoragableListNode;
+use CristianPeter\LaravelDisposableContactGuard\Core\PhoneDecisionNode;
 use CristianPeter\LaravelDisposableContactGuard\Validation\IndisposableEmail;
 use CristianPeter\LaravelDisposableContactGuard\Validation\IndisposableNumber;
 use Illuminate\Support\ServiceProvider;
@@ -38,8 +36,8 @@ class DisposableServiceProvider extends ServiceProvider
         ], 'laravel-disposable-guard');
 
         $this->callAfterResolving('validator', function (Factory $validator) {
-            $validator->extend('indisposable_email', IndisposableEmail::class.'@validate', IndisposableEmail::$errorMessage);
-            $validator->extend('indisposable_number', IndisposableNumber::class.'@validate', IndisposableNumber::$errorMessage);
+            $validator->extend('indisposable', IndisposableEmail::class.'@validate', IndisposableEmail::$errorMessage);
+            $validator->extend('indisposable-number', IndisposableNumber::class.'@validate', IndisposableNumber::$errorMessage);
         });
     }
 
@@ -55,10 +53,10 @@ class DisposableServiceProvider extends ServiceProvider
         $this->bindDisposableService('disposable_email.domains', DisposableDomains::class, 'email');
         $this->bindDisposableService('disposable_phone.numbers', DisposableNumbers::class, 'phone');
 
-        $this->app->singleton(AdaptorDecisionNode::class, function ($app) {
-            $then = new NumcheckrNode();
-            $otherwise = new StoragableListNode();
-            return new AdaptorDecisionNode($then, $otherwise);
+        $this->app->singleton(PhoneDecisionNode::class, function ($app) {
+            $nodes = $app['config']["disposable-guard.nodes"];
+            $nodes = $this->buildInstances($nodes, $app);
+            return new PhoneDecisionNode($nodes);
         });
     }
 
@@ -86,5 +84,14 @@ class DisposableServiceProvider extends ServiceProvider
         });
 
         $this->app->alias($key, $class);
+    }
+
+    private function buildInstances(mixed $nodes, $app): array
+    {
+        $result = [];
+        foreach ($nodes as $key => $node) {
+            $result[] = $app[$node];
+        }
+        return $result;
     }
 }

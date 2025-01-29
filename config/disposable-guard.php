@@ -1,10 +1,11 @@
 <?php
 
+use CristianPeter\LaravelDisposableContactGuard\Core\Nodes\NumcheckrNode;
+use CristianPeter\LaravelDisposableContactGuard\Core\Nodes\StoragableListNode;
 use CristianPeter\LaravelDisposableContactGuard\Fetcher\email\DefaultEmailFetcher;
 use CristianPeter\LaravelDisposableContactGuard\Fetcher\phone\DefaultPhoneFetcher;
 
 return [
-
     'email' => [
         'sources' => [
             'https://cdn.jsdelivr.net/gh/disposable/disposable-email-domains@master/domains.json',
@@ -35,11 +36,16 @@ return [
             'store' => 'default',
             'key' => 'disposable_phone:numbers',
         ],
-    ],
-    'integrations' => [
-        'numcheckr' =>  [
-            'url' => env('NUMCHECKR_URL', 'https://numcheckr.com/api/check-number'),
-            'api_key' => env('NUMCHECKR_API_KEY', ''),
+        'integrations' => [
+            'numcheckr' =>  [
+                'url' => env('NUMCHECKR_URL', 'https://numcheckr.com/api/check-number'),
+                'api_key' => env('NUMCHECKR_API_KEY', ''),
+            ]
         ]
-    ]
+    ],
+    'nodes' => [
+        StoragableListNode::class,
+        NumcheckrNode::class,
+    ],
+
 ];

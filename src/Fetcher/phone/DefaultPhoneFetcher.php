@@ -25,7 +25,10 @@ class DefaultPhoneFetcher implements Fetcher
         if (! $this->isValidJson($content)) {
             throw new UnexpectedValueException('Provided data could not be parsed as JSON');
         }
-        return array_flip(array_keys(json_decode($content,  flags: JSON_OBJECT_AS_ARRAY)));
+        $data = json_decode($content,  flags: JSON_OBJECT_AS_ARRAY);
+        $result = $this->parseE16Format($data);
+
+        return $result;
     }
 
     protected function isValidJson($data): bool
@@ -33,5 +36,18 @@ class DefaultPhoneFetcher implements Fetcher
         $data = json_decode($data, true);
 
         return json_last_error() === JSON_ERROR_NONE && ! empty($data);
+    }
+
+    /**
+     * @param mixed $data
+     * @return array
+     */
+    public function parseE16Format(mixed $data): array
+    {
+        $result = [];
+        foreach ($data as $key => $value) {
+            $result[] = '+' . $key;
+        }
+        return $result;
     }
 }
