@@ -23,7 +23,7 @@ trait HandleStorage
      */
     public function saveToStorage(array $items): bool|int
     {
-        $saved = file_put_contents($this->getStoragePath(), json_encode($items));
+        $saved = file_put_contents($this->getStoragePath(), json_encode(array_values($items)));
 
         if ($saved) {
             $this->flushCache();
