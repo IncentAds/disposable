@@ -25,8 +25,9 @@ trait HandleStorage
     {
         $saved = file_put_contents($this->getStoragePath(), json_encode(array_values($items)));
 
+        // overwrite key in cache
         if ($saved) {
-            $this->flushCache();
+            $this->saveToCache($this->cacheKey, $items);
         }
 
         return $saved;
