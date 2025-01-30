@@ -14,11 +14,9 @@ trait HandleStorage
         $items = is_file($this->getStoragePath())
             ? file_get_contents($this->getStoragePath())
             : file_get_contents(self::FALLBACK_LOCATION);
-
-        return array_diff(
-            json_decode($items, true),
-            $this->getWhitelist()
-        );
+        $items = (array) json_decode($items);
+        $items = array_combine(array_values($items), $items) ?? [];
+        return array_diff($items, $this->getWhitelist());
     }
     /**
      * Save the domains in storage.

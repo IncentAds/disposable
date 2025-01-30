@@ -58,7 +58,7 @@ class UpdateDisposableNumbersCommand extends Command
             return CommandAlias::FAILURE;
         }
 
-        $data = [];
+        $data = $disposable->getNumbers();
         foreach ($sources as $source) {
             $data = array_merge($data, $this->laravel->call([$fetcher, 'handle'], [
                     'url' => $source,
