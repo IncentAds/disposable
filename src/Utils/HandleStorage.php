@@ -15,7 +15,7 @@ trait HandleStorage
             ? file_get_contents($this->getStoragePath())
             : file_get_contents(self::FALLBACK_LOCATION);
         $items = (array) json_decode($items);
-        $items = array_combine(array_values($items), $items) ?? [];
+        $items = ArrayHelper::combineKeysValues($items);
         return array_diff($items, $this->getWhitelist());
     }
     /**
