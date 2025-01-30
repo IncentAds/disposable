@@ -11,7 +11,7 @@ trait HasCache
      *
      * @throws InvalidArgumentException
      */
-    protected function getFromCache(string $key): ?array
+    public function getFromCache(string $key): ?array
     {
         if ($this->cache) {
             $items = $this->cache->get($key);
