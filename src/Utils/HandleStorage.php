@@ -14,8 +14,7 @@ trait HandleStorage
         $items = is_file($this->getStoragePath())
             ? file_get_contents($this->getStoragePath())
             : file_get_contents(self::FALLBACK_LOCATION);
-        $items = (array) json_decode($items);
-        $items = ArrayHelper::combineKeysValues($items);
+        $items = ArrayHelper::combineKeysValues(json_decode($items)) ?: [];
         return array_diff($items, $this->getWhitelist());
     }
     /**

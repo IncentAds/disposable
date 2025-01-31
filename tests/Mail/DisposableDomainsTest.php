@@ -79,7 +79,7 @@ class DisposableDomainsTest extends EmailTestCase
 
         $domains = $this->disposable()->getDomains();
 
-        $this->assertEquals(['foo'], $domains);
+        $this->assertEquals(['foo'], array_values($domains));
     }
 
     #[Test]
