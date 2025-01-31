@@ -14,21 +14,19 @@ trait HandleStorage
         $items = is_file($this->getStoragePath())
             ? file_get_contents($this->getStoragePath())
             : file_get_contents(self::FALLBACK_LOCATION);
-
-        return array_diff(
-            json_decode($items, true),
-            $this->getWhitelist()
-        );
+        $items = ArrayHelper::combineKeysValues(json_decode($items)) ?: [];
+        return array_diff($items, $this->getWhitelist());
     }
     /**
      * Save the domains in storage.
      */
     public function saveToStorage(array $items): bool|int
     {
-        $saved = file_put_contents($this->getStoragePath(), json_encode($items));
+        $saved = file_put_contents($this->getStoragePath(), json_encode(array_values($items)));
 
+        // overwrite key in cache
         if ($saved) {
-            $this->flushCache();
+            $this->saveToCache($this->cacheKey, $items);
         }
 
         return $saved;

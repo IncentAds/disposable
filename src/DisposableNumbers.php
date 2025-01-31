@@ -7,7 +7,7 @@ use CristianPeter\LaravelDisposableContactGuard\Utils\HandleStorage;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Psr\SimpleCache\InvalidArgumentException;
 
-class DisposableNumbers
+class DisposableNumbers implements Disposable
 {
     use HasCache;
     use HandleStorage;

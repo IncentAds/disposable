@@ -40,7 +40,7 @@ class UpdateDisposableDomainsCommand extends Command
         if (! $fetcher instanceof Fetcher) {
             $this->error($fetcherClass.' should implement '.Fetcher::class);
 
-            return Command::FAILURE;
+            return CommandAlias::FAILURE;
         }
 
         $sources = $config->get('disposable-guard.email.sources');

@@ -2,6 +2,7 @@
 
 namespace CristianPeter\LaravelDisposableContactGuard\Cache;
 
+use CristianPeter\LaravelDisposableContactGuard\Utils\ArrayHelper;
 use Psr\SimpleCache\InvalidArgumentException;
 
 trait HasCache
@@ -11,7 +12,7 @@ trait HasCache
      *
      * @throws InvalidArgumentException
      */
-    protected function getFromCache(string $key): ?array
+    public function getFromCache(string $key): ?array
     {
         if ($this->cache) {
             $items = $this->cache->get($key);
@@ -23,7 +24,7 @@ trait HasCache
                 return [];
             }
 
-            return $items;
+            return ArrayHelper::combineKeysValues($items);
         }
 
         return [];
@@ -35,7 +36,7 @@ trait HasCache
     public function saveToCache(string $key, ?array $items = null): void
     {
         if ($this->cache && ! empty($items)) {
-            $this->cache->forever($key, $items);
+            $this->cache->forever($key, array_values($items));
         }
     }
 

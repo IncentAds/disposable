@@ -10,7 +10,7 @@ use Illuminate\Support\Str;
 use Psr\SimpleCache\CacheInterface;
 use Psr\SimpleCache\InvalidArgumentException;
 
-class DisposableDomains
+class DisposableDomains implements Disposable
 {
     use HasCache;
     use HandleStorage;

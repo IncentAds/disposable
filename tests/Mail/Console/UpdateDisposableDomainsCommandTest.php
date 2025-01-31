@@ -74,7 +74,7 @@ class UpdateDisposableDomainsCommandTest extends EmailTestCase
         $this->assertFileExists($this->storagePath);
 
         $domains = $this->disposable()->getDomains();
-        $this->assertEquals(['bar'], $domains);
+        $this->assertEquals(['bar'], array_values($domains));
     }
 
     #[Test]
@@ -109,7 +109,7 @@ class UpdateDisposableDomainsCommandTest extends EmailTestCase
         $this->assertFileExists($this->storagePath);
 
         $domains = $this->disposable()->getDomains();
-        $this->assertEquals(['bar'], $domains);
+        $this->assertEquals(['bar'], array_values($domains));
     }
 }
 

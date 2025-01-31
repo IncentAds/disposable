@@ -3,6 +3,7 @@
 namespace CristianPeter\LaravelDisposableContactGuard\Fetcher\phone;
 
 use CristianPeter\LaravelDisposableContactGuard\Fetcher\Fetcher;
+use CristianPeter\LaravelDisposableContactGuard\Utils\ArrayHelper;
 use InvalidArgumentException;
 use UnexpectedValueException;
 
@@ -27,8 +28,7 @@ class DefaultPhoneFetcher implements Fetcher
         }
         $data = json_decode($content,  flags: JSON_OBJECT_AS_ARRAY);
         $result = $this->parseE16Format($data);
-
-        return $result;
+        return ArrayHelper::combineKeysValues($result);
     }
 
     protected function isValidJson($data): bool
