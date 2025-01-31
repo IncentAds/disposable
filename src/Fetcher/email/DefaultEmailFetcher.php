@@ -3,6 +3,7 @@
 namespace CristianPeter\LaravelDisposableContactGuard\Fetcher\email;
 
 use CristianPeter\LaravelDisposableContactGuard\Fetcher\Fetcher;
+use CristianPeter\LaravelDisposableContactGuard\Utils\ArrayHelper;
 use InvalidArgumentException;
 use UnexpectedValueException;
 
@@ -24,7 +25,7 @@ class DefaultEmailFetcher implements Fetcher
             throw new UnexpectedValueException('Provided data could not be parsed as JSON');
         }
 
-        return json_decode($content);
+        return ArrayHelper::combineKeysValues(json_decode($content));
     }
 
     protected function isValidJson($data): bool
