@@ -78,10 +78,19 @@ class DisposableDomains implements Disposable
      */
     public function bootstrap(): static
     {
-        $this->domains = $this->getFromCache($this->cacheKey) ?? [];
-        if (empty($this->domains) || $this->hasNewBlackListItem()) {
-            $this->domains = $this->combineSavingCache($this->getBlacklist(), $this->getFromStorage());
+        if (!empty($this->domains)) {
+            return $this;
         }
+
+        $this->domains = $this->getFromCache($this->cacheKey) ?? [];
+
+        if (empty($this->domains)) {
+            $this->domains = $this->combineSavingCache($this->getBlacklist(), $this->getFromStorage());
+        } else if ($this->hasNewBlackListItem()) {
+            $this->domains = array_merge($this->domains, $this->getBlacklist());
+            $this->saveToCache($this->cacheKey, $this->domains);
+        }
+
         return $this;
     }
 
