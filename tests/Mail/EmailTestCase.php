@@ -11,7 +11,7 @@ abstract class EmailTestCase extends TestCase
     /**
      * @var string
      */
-    protected string $storagePath = __DIR__.'/domains.json';
+    protected string $storagePath = __DIR__.'/disposable_domains.json';
 
     /**
      * Define environment setup.

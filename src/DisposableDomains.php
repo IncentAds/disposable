@@ -78,10 +78,6 @@ class DisposableDomains implements Disposable
      */
     public function bootstrap(): static
     {
-        if (!empty($this->domains)) {
-            return $this;
-        }
-
         $this->domains = $this->getFromCache($this->cacheKey) ?? [];
 
         if (empty($this->domains)) {

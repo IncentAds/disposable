@@ -14,8 +14,8 @@ trait HandleStorage
         $items = is_file($this->getStoragePath())
             ? file_get_contents($this->getStoragePath())
             : file_get_contents(self::FALLBACK_LOCATION);
-        $items = ArrayHelper::combineKeysValues(json_decode($items)) ?: [];
-        return array_diff($items, $this->getWhitelist());
+        $items = array_diff(json_decode($items), $this->getWhitelist());
+        return ArrayHelper::combineKeysValues($items) ?: [];
     }
     /**
      * Save the domains in storage.
@@ -26,7 +26,7 @@ trait HandleStorage
 
         // overwrite key in cache
         if ($saved) {
-            $this->saveToCache($this->cacheKey, $items);
+            $this->saveToCache($this->cacheKey, array_values($items));
         }
 
         return $saved;

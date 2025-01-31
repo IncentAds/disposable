@@ -236,6 +236,7 @@ class DisposableDomainsTest extends EmailTestCase
         $hasChanged = $disposableDomainsMock->hasNewBlackListItem();
 
         $this->assertTrue($hasChanged);
+        \Mockery::close();
     }
     #[Test]
     public function it_has_not_domain_changed_when_blacklist_is_the_same_domain_list()
@@ -249,5 +250,6 @@ class DisposableDomainsTest extends EmailTestCase
         $hasChanged = $disposableDomainsMock->hasNewBlackListItem();
 
         $this->assertFalse($hasChanged);
+        \Mockery::close();
     }
 }
