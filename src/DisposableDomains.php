@@ -85,6 +85,9 @@ class DisposableDomains implements Disposable
         } else if ($this->hasNewBlackListItem()) {
             $this->domains = array_merge($this->domains, $this->getBlacklist());
             $this->saveToCache($this->cacheKey, $this->domains);
+        }else if ($this->hasNewWhitelistItem()){
+            $this->domains = array_diff($this->domains, $this->getWhitelist());
+            $this->saveToCache($this->cacheKey, $this->domains);
         }
 
         return $this;
@@ -284,5 +287,13 @@ class DisposableDomains implements Disposable
     public function hasNewBlackListItem(): bool
     {
         return count(array_diff($this->getBlacklist(), $this->getDomains()));
+    }
+
+    /**
+     * Check if new domains was added to the blacklist
+     */
+    public function hasNewWhitelistItem(): bool
+    {
+        return count(array_diff($this->getWhitelist(), $this->getDomains()));
     }
 }
