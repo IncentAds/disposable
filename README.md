@@ -1,6 +1,6 @@
 # Laravel Disposable Contact Guard
 
-Forked package from Propaganistas/Laravel-Disposable-Email(https://github.com/Propaganistas/Laravel-Disposable-Email)
+Forked package from [Propaganistas/Laravel-Disposable-Email](https://github.com/Propaganistas/Laravel-Disposable-Email)
 - Adds a validator to Laravel for checking whether a given email address isn't originating from disposable email services such as `Mailinator`, `Guerillamail`, ...
 Uses the disposable domains blacklist from [disposable/disposable](https://github.com/disposable/disposable) by default.
 
@@ -64,7 +64,7 @@ Use the `indisposable` validator to ensure a given field doesn't hold a disposab
 ```
 Use the `real_phone` validator to ensure a given field doesn't hold a disposable number.
 ```php
-'field' => 'email|indisposable',
+'field' => 'real_phone',
 ```
 
 ### Custom fetches
