@@ -5,7 +5,7 @@ Forked package from [Propaganistas/Laravel-Disposable-Email](https://github.com/
 Uses the disposable domains blacklist from [disposable/disposable](https://github.com/disposable/disposable) by default.
 
 - Adds a validator to Laravel for checking wheter a given phone number(E.164format) isn't origin from disposable phone services..
-Uses the disposable number list from [disposable-number](https://github.com/Propaganistas/Laravel-Phone)
+Uses the disposable number list from [disposable-number](https://github.com/iP1SMS/disposable-phone-numbers)
 
 Have the option for using numcheckr service for backup source
 
