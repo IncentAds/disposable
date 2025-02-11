@@ -19,7 +19,7 @@ Uses the disposable domains blacklist from [disposable/disposable](https://githu
 2. Publish the configuration file and adapt the configuration as desired:
 
     ```bash
-    php artisan vendor:publish --tag=laravel-disposable-email
+    php artisan vendor:publish --tag=laravel-disposable-guard
     ```
 
 3. Run the following artisan command to fetch an up-to-date list of disposable domains:
