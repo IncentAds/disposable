@@ -1,6 +1,6 @@
 <?php
 
-namespace CristianPeter\LaravelDisposableContactGuard\Utils;
+namespace Incentads\Disposable\Utils;
 
 class ArrayHelper
 {

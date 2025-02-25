@@ -1,41 +1,33 @@
 <?php
 
-namespace CristianPeter\LaravelDisposableContactGuard\Fetcher\phone;
+namespace Incentads\Disposable\Fetcher\phone;
 
-use CristianPeter\LaravelDisposableContactGuard\Fetcher\Fetcher;
-use CristianPeter\LaravelDisposableContactGuard\Utils\ArrayHelper;
+use Incentads\Disposable\Fetcher\Fetcher;
+use Incentads\Disposable\Utils\ArrayHelper;
 use InvalidArgumentException;
 use UnexpectedValueException;
 
 class DefaultPhoneFetcher implements Fetcher
 {
-
     public function handle($url): array
     {
-        if (! $url) {
+        if ( ! $url) {
             throw new InvalidArgumentException('Source URL is null');
         }
 
         $content = file_get_contents($url);
 
-        if ($content === false) {
-            throw new UnexpectedValueException('Failed to interpret the source URL ('.$url.')');
+        if (false === $content) {
+            throw new UnexpectedValueException('Failed to interpret the source URL (' . $url . ')');
         }
 
 
-        if (! $this->isValidJson($content)) {
+        if ( ! $this->isValidJson($content)) {
             throw new UnexpectedValueException('Provided data could not be parsed as JSON');
         }
-        $data = json_decode($content,  flags: JSON_OBJECT_AS_ARRAY);
+        $data = json_decode($content, flags: JSON_OBJECT_AS_ARRAY);
         $result = $this->parseE16Format($data);
         return ArrayHelper::combineKeysValues($result);
-    }
-
-    protected function isValidJson($data): bool
-    {
-        $data = json_decode($data, true);
-
-        return json_last_error() === JSON_ERROR_NONE && ! empty($data);
     }
 
     /**
@@ -49,5 +41,12 @@ class DefaultPhoneFetcher implements Fetcher
             $result[] = '+' . $key;
         }
         return $result;
+    }
+
+    protected function isValidJson($data): bool
+    {
+        $data = json_decode($data, true);
+
+        return JSON_ERROR_NONE === json_last_error() && ! empty($data);
     }
 }

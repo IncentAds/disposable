@@ -1,18 +1,16 @@
 <?php
 
-namespace CristianPeter\LaravelDisposableContactGuard\Integrations\NumCheckR;
+namespace Incentads\Disposable\Integrations\NumCheckR;
 
-use CristianPeter\LaravelDisposableContactGuard\Integrations\NumCheckR\Client\NumCheckrClient;
-use CristianPeter\LaravelDisposableContactGuard\Integrations\NumCheckR\Dto\NumCheckrDto;
-use CristianPeter\LaravelDisposableContactGuard\Integrations\NumCheckR\Exceptions\ApiErrorException;
-use CristianPeter\LaravelDisposableContactGuard\Integrations\NumCheckR\Factory\NumCheckrDtoFactory;
 use Illuminate\Http\Client\ConnectionException;
+use Incentads\Disposable\Integrations\NumCheckR\Client\NumCheckrClient;
+use Incentads\Disposable\Integrations\NumCheckR\Dto\NumCheckrDto;
+use Incentads\Disposable\Integrations\NumCheckR\Exceptions\ApiErrorException;
+use Incentads\Disposable\Integrations\NumCheckR\Factory\NumCheckrDtoFactory;
 
 final readonly class NumCheckrManager implements NumCheckrApiInterface
 {
-    public function __construct(private NumCheckrClient $client, private NumCheckrDtoFactory $factory)
-    {
-    }
+    public function __construct(private NumCheckrClient $client, private NumCheckrDtoFactory $factory) {}
 
     /**
      * @throws ApiErrorException
@@ -28,10 +26,18 @@ final readonly class NumCheckrManager implements NumCheckrApiInterface
      * @throws ApiErrorException
      * @throws ConnectionException
      */
-    public function isNotDisposable(string $number):bool
+    public function isNotDisposable(string $number): bool
     {
         return ! $this->client->isDisposable($number);
     }
 
+    /**
+     * @throws ApiErrorException
+     * @throws ConnectionException
+     */
+    public function isDisposable(string $number): bool
+    {
+        return $this->client->isDisposable($number);
+    }
 
 }

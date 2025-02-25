@@ -1,21 +1,21 @@
 <?php
 
-namespace CristianPeter\LaravelDisposableContactGuard;
+namespace Incentads\Disposable;
 
-use CristianPeter\LaravelDisposableContactGuard\Cache\HasCache;
-use CristianPeter\LaravelDisposableContactGuard\Utils\HandleStorage;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Incentads\Disposable\Cache\HasCache;
+use Incentads\Disposable\Utils\HandleStorage;
 use Psr\SimpleCache\CacheInterface;
 use Psr\SimpleCache\InvalidArgumentException;
 
 class DisposableDomains implements Disposable
 {
-    use HasCache;
     use HandleStorage;
+    use HasCache;
 
-    const string FALLBACK_LOCATION =  __DIR__ . '/../disposable_domains.json';
+    public const string FALLBACK_LOCATION =  __DIR__ . '/../disposable_domains.json';
     /**
      * The storage path to retrieve from and save to.
      *
@@ -82,10 +82,10 @@ class DisposableDomains implements Disposable
 
         if (empty($this->domains)) {
             $this->domains = $this->combineSavingCache($this->getBlacklist(), $this->getFromStorage());
-        } else if ($this->hasNewBlackListItem()) {
+        } elseif ($this->hasNewBlackListItem()) {
             $this->domains = array_merge($this->domains, $this->getBlacklist());
             $this->saveToCache($this->cacheKey, $this->domains);
-        }else if ($this->hasNewWhitelistItem()){
+        } elseif ($this->hasNewWhitelistItem()) {
             $this->domains = array_diff($this->domains, $this->getWhitelist());
             $this->saveToCache($this->cacheKey, $this->domains);
         }
@@ -96,14 +96,14 @@ class DisposableDomains implements Disposable
     /**
      * Checks whether the given email address' domain matches a disposable email service.
      *
-     * @param string $email
+     * @param string $item
      * @return bool
      */
-    public function isDisposable($email): bool
+    public function isDisposable(string $item): bool
     {
-        $domain = Str::lower(Arr::get(explode('@', $email, 2), 1));
+        $domain = Str::lower(Arr::get(explode('@', $item, 2), 1));
 
-        if (! $domain) {
+        if ( ! $domain) {
             // Just ignore this validator if the value doesn't even resemble an email or domain.
             return false;
         }
@@ -128,12 +128,12 @@ class DisposableDomains implements Disposable
     /**
      * Checks whether the given email address' domain doesn't match a disposable email service.
      *
-     * @param string $email
+     * @param string $item
      * @return bool
      */
-    public function isNotDisposable(string $email): bool
+    public function isLegit(string $item): bool
     {
-        return ! $this->isDisposable($email);
+        return ! $this->isDisposable($item);
     }
 
     /**
@@ -144,7 +144,7 @@ class DisposableDomains implements Disposable
      */
     public function isIndisposable(string $email): bool
     {
-        return $this->isNotDisposable($email);
+        return $this->isLegit($email);
     }
 
     /**
@@ -270,18 +270,6 @@ class DisposableDomains implements Disposable
     }
 
     /**
-     * Merge the arrays and save result in cache
-     * @param array ...$arrays
-     * @return array
-     */
-    private function combineSavingCache(array ...$arrays): array
-    {
-        $merged = array_merge(...$arrays);
-        $this->saveToCache($this->cacheKey, $merged);
-        return $merged;
-    }
-
-    /**
      * Check if new domains was added to the blacklist
      */
     public function hasNewBlackListItem(): bool
@@ -295,5 +283,17 @@ class DisposableDomains implements Disposable
     public function hasNewWhitelistItem(): bool
     {
         return count(array_diff($this->getWhitelist(), $this->getDomains()));
+    }
+
+    /**
+     * Merge the arrays and save result in cache
+     * @param array ...$arrays
+     * @return array
+     */
+    private function combineSavingCache(array ...$arrays): array
+    {
+        $merged = array_merge(...$arrays);
+        $this->saveToCache($this->cacheKey, $merged);
+        return $merged;
     }
 }

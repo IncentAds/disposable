@@ -1,15 +1,17 @@
 <?php
 
-namespace CristianPeter\LaravelDisposableContactGuard\Tests\Mail\Console;
+namespace Incentads\Disposable\Tests\Unit\Mail\Console;
 
-use CristianPeter\LaravelDisposableContactGuard\Tests\Mail\EmailTestCase;
+use Incentads\Disposable\Tests\EmailTestCase;
+use Incentads\Disposable\Tests\Support\CustomFetcher;
+use Incentads\Disposable\Tests\Support\InvalidFetcher;
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Test;
 
 class UpdateDisposableDomainsCommandTest extends EmailTestCase
 {
     #[Test]
-    public function it_creates_the_file()
+    public function it_creates_the_file(): void
     {
         $this->assertFileDoesNotExist($this->storagePath);
 
@@ -25,7 +27,7 @@ class UpdateDisposableDomainsCommandTest extends EmailTestCase
     }
 
     #[Test]
-    public function it_overwrites_the_file()
+    public function it_overwrites_the_file(): void
     {
         file_put_contents($this->storagePath, json_encode(['foo']));
 
@@ -42,14 +44,14 @@ class UpdateDisposableDomainsCommandTest extends EmailTestCase
     }
 
     #[Test]
-    public function it_doesnt_overwrite_on_fetch_failure()
+    public function it_doesnt_overwrite_on_fetch_failure(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Source URL is null');
 
         file_put_contents($this->storagePath, json_encode(['foo']));
 
-        $this->app['config']['disposable-guard.email.sources'] = [null];
+        $this->app['config']['disposable.email.sources'] = [null];
 
         $this->artisan('disposable:update')
             ->assertExitCode(1);
@@ -61,12 +63,12 @@ class UpdateDisposableDomainsCommandTest extends EmailTestCase
     }
 
     #[Test]
-    public function it_can_use_a_custom_fetcher()
+    public function it_can_use_a_custom_fetcher(): void
     {
         file_put_contents($this->storagePath, json_encode(['foo']));
 
-        $this->app['config']['disposable-guard.email.sources'] = ['bar'];
-        $this->app['config']['disposable-guard.email.fetcher'] = CustomFetcher::class;
+        $this->app['config']['disposable.email.sources'] = ['bar'];
+        $this->app['config']['disposable.email.fetcher'] = CustomFetcher::class;
 
         $this->artisan('disposable:update')
             ->assertExitCode(0);
@@ -78,12 +80,12 @@ class UpdateDisposableDomainsCommandTest extends EmailTestCase
     }
 
     #[Test]
-    public function custom_fetchers_need_fetcher_contract()
+    public function custom_fetchers_need_fetcher_contract(): void
     {
         file_put_contents($this->storagePath, json_encode(['foo']));
 
-        $this->app['config']['disposable-guard.email.sources'] = ['bar'];
-        $this->app['config']['disposable-guard.email.fetcher'] = InvalidFetcher::class;
+        $this->app['config']['disposable.email.sources'] = ['bar'];
+        $this->app['config']['disposable.email.fetcher'] = InvalidFetcher::class;
 
         $this->artisan('disposable:update')
             ->assertExitCode(1);
@@ -95,13 +97,13 @@ class UpdateDisposableDomainsCommandTest extends EmailTestCase
     }
 
     #[Test]
-    public function it_processes_legacy_source_config()
+    public function it_processes_legacy_source_config(): void
     {
         file_put_contents($this->storagePath, json_encode(['foo']));
 
-        $this->app['config']['disposable-guard.email.sources'] = null;
-        $this->app['config']['disposable-guard.email.source'] = 'bar';
-        $this->app['config']['disposable-guard.email.fetcher'] = CustomFetcher::class;
+        $this->app['config']['disposable.email.sources'] = null;
+        $this->app['config']['disposable.email.source'] = 'bar';
+        $this->app['config']['disposable.email.fetcher'] = CustomFetcher::class;
 
         $this->artisan('disposable:update')
             ->assertExitCode(0);
@@ -112,4 +114,3 @@ class UpdateDisposableDomainsCommandTest extends EmailTestCase
         $this->assertEquals(['bar'], array_values($domains));
     }
 }
-

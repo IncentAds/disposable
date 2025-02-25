@@ -1,14 +1,14 @@
 <?php
 
-namespace CristianPeter\LaravelDisposableContactGuard;
+namespace Incentads\Disposable;
 
-use CristianPeter\LaravelDisposableContactGuard\Console\UpdateDisposableDomainsCommand;
-use CristianPeter\LaravelDisposableContactGuard\Console\UpdateDisposableNumbersCommand;
-use CristianPeter\LaravelDisposableContactGuard\Core\Phone\PhoneDecisionNode;
-use CristianPeter\LaravelDisposableContactGuard\Validation\IndisposableEmail;
-use CristianPeter\LaravelDisposableContactGuard\Validation\IndisposableNumber;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Factory;
+use Incentads\Disposable\Console\UpdateDisposableDomainsCommand;
+use Incentads\Disposable\Console\UpdateDisposableNumbersCommand;
+use Incentads\Disposable\Core\Phone\PhoneDecisionNode;
+use Incentads\Disposable\Validation\DisposableEmail;
+use Incentads\Disposable\Validation\DisposableNumber;
 
 class DisposableServiceProvider extends ServiceProvider
 {
@@ -17,7 +17,7 @@ class DisposableServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    protected string $config = __DIR__.'/../config/disposable-guard.php';
+    protected string $config = __DIR__ . '/../config/disposable.php';
 
     /**
      * Bootstrap the application services.
@@ -32,12 +32,12 @@ class DisposableServiceProvider extends ServiceProvider
         }
 
         $this->publishes([
-            $this->config => config_path('disposable-guard.php'),
-        ], 'laravel-disposable-guard');
+            $this->config => config_path('disposable.php'),
+        ], 'disposable-config');
 
-        $this->callAfterResolving('validator', function (Factory $validator) {
-            $validator->extend('indisposable', IndisposableEmail::class.'@validate', IndisposableEmail::$errorMessage);
-            $validator->extend('real_phone', IndisposableNumber::class.'@validate', IndisposableNumber::$errorMessage);
+        $this->callAfterResolving('validator', function (Factory $validator): void {
+            $validator->extend('disposable_email', DisposableEmail::class . '@validate', DisposableEmail::$errorMessage);
+            $validator->extend('disposable_phone', DisposableNumber::class . '@validate', DisposableNumber::$errorMessage);
         });
     }
 
@@ -48,13 +48,13 @@ class DisposableServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->mergeConfigFrom($this->config, 'disposable-guard');
+        $this->mergeConfigFrom($this->config, 'disposable');
 
         $this->bindDisposableService('disposable_email.domains', DisposableDomains::class, 'email');
         $this->bindDisposableService('disposable_phone.numbers', DisposableNumbers::class, 'phone');
 
         $this->app->singleton(PhoneDecisionNode::class, function ($app) {
-            $nodes = $app['config']["disposable-guard.nodes"];
+            $nodes = $app['config']["disposable.nodes"];
             $nodes = $this->buildInstances($nodes, $app);
             return new PhoneDecisionNode($nodes);
         });
@@ -64,20 +64,20 @@ class DisposableServiceProvider extends ServiceProvider
     {
         $this->app->singleton($key, function ($app) use ($class, $configKey) {
             // Only build and pass the requested cache store if caching is enabled.
-            if ($app['config']["disposable-guard.$configKey.cache.enabled"]) {
-                $store = $app['config']["disposable-guard.$configKey.cache.store"];
-                $cache = $app['cache']->store($store == 'default' ? $app['config']['cache.default'] : $store);
+            if ($app['config']["disposable.{$configKey}.cache.enabled"]) {
+                $store = $app['config']["disposable.{$configKey}.cache.store"];
+                $cache = $app['cache']->store('default' === $store ? $app['config']['cache.default'] : $store);
             }
 
             $instance = new $class($cache ?? null);
 
-            $instance->setStoragePath($app['config']["disposable-guard.$configKey.storage"]);
-            $instance->setCacheKey($app['config']["disposable-guard.$configKey.cache.key"]);
-            $instance->setWhitelist($app['config']["disposable-guard.$configKey.whitelist"]);
-            $instance->setBlacklist($app['config']["disposable-guard.$configKey.blacklist"]);
+            $instance->setStoragePath($app['config']["disposable.{$configKey}.storage"]);
+            $instance->setCacheKey($app['config']["disposable.{$configKey}.cache.key"]);
+            $instance->setWhitelist($app['config']["disposable.{$configKey}.whitelist"]);
+            $instance->setBlacklist($app['config']["disposable.{$configKey}.blacklist"]);
 
-            if ($configKey === 'email') {
-                $instance->setIncludeSubdomains($app['config']['disposable-guard.email.include_subdomains']);
+            if ('email' === $configKey) {
+                $instance->setIncludeSubdomains($app['config']['disposable.email.include_subdomains']);
             }
 
             return $instance->bootstrap();

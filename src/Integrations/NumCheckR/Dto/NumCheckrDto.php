@@ -1,6 +1,6 @@
 <?php
 
-namespace CristianPeter\LaravelDisposableContactGuard\Integrations\NumCheckR\Dto;
+namespace Incentads\Disposable\Integrations\NumCheckR\Dto;
 
 class NumCheckrDto
 {
@@ -14,9 +14,7 @@ class NumCheckrDto
         private string $e16Format,
         private string $nationalFormat,
         private string $internationalFormat,
-    ){
-
-    }
+    ) {}
 
 
 }

@@ -1,35 +1,37 @@
 <?php
 
-namespace CristianPeter\LaravelDisposableContactGuard\Tests\Mail;
+namespace Incentads\Disposable\Tests\Unit\Mail;
 
-use CristianPeter\LaravelDisposableContactGuard\DisposableDomains;
+use Incentads\Disposable\DisposableDomains;
+use Incentads\Disposable\Tests\EmailTestCase;
+use Mockery;
 use PHPUnit\Framework\Attributes\Test;
 
 class DisposableDomainsTest extends EmailTestCase
 {
     #[Test]
-    public function it_can_be_resolved_using_alias()
+    public function it_can_be_resolved_using_alias(): void
     {
         $this->assertEquals(DisposableDomains::class, get_class($this->app->make('disposable_email.domains')));
     }
 
     #[Test]
-    public function it_can_be_resolved_using_class()
+    public function it_can_be_resolved_using_class(): void
     {
         $this->assertEquals(DisposableDomains::class, get_class($this->app->make(DisposableDomains::class)));
     }
 
     #[Test]
-    public function it_can_get_storage_path()
+    public function it_can_get_storage_path(): void
     {
         $this->assertEquals(
-            $this->app['config']['disposable-guard.email.storage'],
-            $this->disposable()->getStoragePath()
+            $this->app['config']['disposable.email.storage'],
+            $this->disposable()->getStoragePath(),
         );
     }
 
     #[Test]
-    public function it_can_set_storage_path()
+    public function it_can_set_storage_path(): void
     {
         $this->disposable()->setStoragePath('foo');
 
@@ -37,16 +39,16 @@ class DisposableDomainsTest extends EmailTestCase
     }
 
     #[Test]
-    public function it_can_get_include_subdomains()
+    public function it_can_get_include_subdomains(): void
     {
         $this->assertEquals(
-            $this->app['config']['disposable-guard.email.include_subdomains'],
-            $this->disposable()->getIncludeSubdomains()
+            $this->app['config']['disposable.email.include_subdomains'],
+            $this->disposable()->getIncludeSubdomains(),
         );
     }
 
     #[Test]
-    public function it_can_set_include_subdomains()
+    public function it_can_set_include_subdomains(): void
     {
         $this->disposable()->setIncludeSubdomains(true);
 
@@ -54,16 +56,16 @@ class DisposableDomainsTest extends EmailTestCase
     }
 
     #[Test]
-    public function it_can_get_cache_key()
+    public function it_can_get_cache_key(): void
     {
         $this->assertEquals(
-            $this->app['config']['disposable-guard.email.cache.key'],
-            $this->disposable()->getCacheKey()
+            $this->app['config']['disposable.email.cache.key'],
+            $this->disposable()->getCacheKey(),
         );
     }
 
     #[Test]
-    public function it_can_set_cache_key()
+    public function it_can_set_cache_key(): void
     {
         $this->disposable()->setCacheKey('foo');
 
@@ -71,7 +73,7 @@ class DisposableDomainsTest extends EmailTestCase
     }
 
     #[Test]
-    public function it_takes_cached_domains_if_available()
+    public function it_takes_cached_domains_if_available(): void
     {
         $this->app['cache.store'][$this->disposable()->getCacheKey()] = ['foo'];
 
@@ -83,7 +85,7 @@ class DisposableDomainsTest extends EmailTestCase
     }
 
     #[Test]
-    public function it_flushes_invalid_cache_values()
+    public function it_flushes_invalid_cache_values(): void
     {
         $this->app['cache.store'][$this->disposable()->getCacheKey()] = 'foo';
 
@@ -93,9 +95,9 @@ class DisposableDomainsTest extends EmailTestCase
     }
 
     #[Test]
-    public function it_skips_cache_when_configured()
+    public function it_skips_cache_when_configured(): void
     {
-        $this->app['config']['disposable-guard.email.cache.enabled'] = false;
+        $this->app['config']['disposable.email.cache.enabled'] = false;
 
         $domains = $this->disposable()->getDomains();
 
@@ -105,9 +107,9 @@ class DisposableDomainsTest extends EmailTestCase
     }
 
     #[Test]
-    public function it_takes_storage_domains_when_cache_is_not_available()
+    public function it_takes_storage_domains_when_cache_is_not_available(): void
     {
-        $this->app['config']['disposable-guard.email.cache.enabled'] = false;
+        $this->app['config']['disposable.email.cache.enabled'] = false;
 
         file_put_contents($this->storagePath, json_encode(['foo']));
 
@@ -119,9 +121,9 @@ class DisposableDomainsTest extends EmailTestCase
     }
 
     #[Test]
-    public function it_takes_package_domains_when_storage_is_not_available()
+    public function it_takes_package_domains_when_storage_is_not_available(): void
     {
-        $this->app['config']['disposable-guard.email.cache.enabled'] = false;
+        $this->app['config']['disposable.email.cache.enabled'] = false;
 
         $domains = $this->disposable()->getDomains();
 
@@ -130,7 +132,7 @@ class DisposableDomainsTest extends EmailTestCase
     }
 
     #[Test]
-    public function it_can_flush_storage()
+    public function it_can_flush_storage(): void
     {
         file_put_contents($this->storagePath, 'foo');
 
@@ -140,7 +142,7 @@ class DisposableDomainsTest extends EmailTestCase
     }
 
     #[Test]
-    public function it_doesnt_throw_exceptions_for_flush_storage_when_file_doesnt_exist()
+    public function it_doesnt_throw_exceptions_for_flush_storage_when_file_doesnt_exist(): void
     {
         $this->disposable()->flushStorage();
 
@@ -148,7 +150,7 @@ class DisposableDomainsTest extends EmailTestCase
     }
 
     #[Test]
-    public function it_can_flush_cache()
+    public function it_can_flush_cache(): void
     {
         $this->app['cache.store'][$this->disposable()->getCacheKey()] = 'foo';
 
@@ -160,27 +162,27 @@ class DisposableDomainsTest extends EmailTestCase
     }
 
     #[Test]
-    public function it_can_verify_disposability()
+    public function it_can_verify_disposability(): void
     {
         $this->assertTrue($this->disposable()->isDisposable('example@yopmail.com'));
-        $this->assertFalse($this->disposable()->isNotDisposable('example@yopmail.com'));
+        $this->assertFalse($this->disposable()->isLegit('example@yopmail.com'));
         $this->assertFalse($this->disposable()->isIndisposable('example@yopmail.com'));
 
         $this->assertFalse($this->disposable()->isDisposable('example@gmail.com'));
-        $this->assertTrue($this->disposable()->isNotDisposable('example@gmail.com'));
+        $this->assertTrue($this->disposable()->isLegit('example@gmail.com'));
         $this->assertTrue($this->disposable()->isIndisposable('example@gmail.com'));
     }
 
     #[Test]
-    public function it_checks_the_full_email_domain()
+    public function it_checks_the_full_email_domain(): void
     {
         $this->assertTrue($this->disposable()->isDisposable('example@mailinator.com'));
         $this->assertTrue($this->disposable()->isDisposable('example@mail.mailinator.com'));
-        $this->assertTrue($this->disposable()->isNotDisposable('example@isnotdisposable.mailinator.com'));
+        $this->assertTrue($this->disposable()->isLegit('example@isnotdisposable.mailinator.com'));
     }
 
     #[Test]
-    public function it_doesnt_check_subdomains_when_not_configured()
+    public function it_doesnt_check_subdomains_when_not_configured(): void
     {
         $this->disposable()->setIncludeSubdomains(false);
 
@@ -188,7 +190,7 @@ class DisposableDomainsTest extends EmailTestCase
     }
 
     #[Test]
-    public function it_checks_subdomains_when_configured()
+    public function it_checks_subdomains_when_configured(): void
     {
         $this->disposable()->setIncludeSubdomains(true);
 
@@ -199,7 +201,7 @@ class DisposableDomainsTest extends EmailTestCase
     }
 
     #[Test]
-    public function it_still_checks_root_domains_when_subdomain_checking_is_configured()
+    public function it_still_checks_root_domains_when_subdomain_checking_is_configured(): void
     {
         $this->disposable()->setIncludeSubdomains(true);
 
@@ -210,7 +212,7 @@ class DisposableDomainsTest extends EmailTestCase
     }
 
     #[Test]
-    public function it_can_exclude_whitelisted_domains()
+    public function it_can_exclude_whitelisted_domains(): void
     {
         $this->disposable()->setWhitelist(['yopmail.com']);
         $this->disposable()->bootstrap();
@@ -219,15 +221,15 @@ class DisposableDomainsTest extends EmailTestCase
 
         $this->assertIsArray($domains);
         $this->assertNotContains('yopmail.com', $domains);
-        $this->assertTrue($this->disposable()->isNotDisposable('example@yopmail.com'));
+        $this->assertTrue($this->disposable()->isLegit('example@yopmail.com'));
 
         $this->disposable()->setIncludeSubdomains(true);
-        $this->assertTrue($this->disposable()->isNotDisposable('example@subdomain.yopmail.com'));
+        $this->assertTrue($this->disposable()->isLegit('example@subdomain.yopmail.com'));
     }
     #[Test]
-    public function it_has_domain_changed_when_blacklist_differ_domain_list()
+    public function it_has_domain_changed_when_blacklist_differ_domain_list(): void
     {
-        $disposableDomainsMock = \Mockery::mock(DisposableDomains::class)
+        $disposableDomainsMock = Mockery::mock(DisposableDomains::class)
             ->makePartial();
 
         $disposableDomainsMock->shouldReceive('getDomains')->andReturn(['yopmail.com']);
@@ -236,12 +238,12 @@ class DisposableDomainsTest extends EmailTestCase
         $hasChanged = $disposableDomainsMock->hasNewBlackListItem();
 
         $this->assertTrue($hasChanged);
-        \Mockery::close();
+        Mockery::close();
     }
     #[Test]
-    public function it_has_not_domain_changed_when_blacklist_is_the_same_domain_list()
+    public function it_has_not_domain_changed_when_blacklist_is_the_same_domain_list(): void
     {
-        $disposableDomainsMock = \Mockery::mock(DisposableDomains::class)
+        $disposableDomainsMock = Mockery::mock(DisposableDomains::class)
             ->makePartial();
 
         $disposableDomainsMock->shouldReceive('getDomains')->andReturn(['yopmail.com']);
@@ -250,6 +252,6 @@ class DisposableDomainsTest extends EmailTestCase
         $hasChanged = $disposableDomainsMock->hasNewBlackListItem();
 
         $this->assertFalse($hasChanged);
-        \Mockery::close();
+        Mockery::close();
     }
 }

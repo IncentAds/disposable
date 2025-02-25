@@ -1,18 +1,18 @@
 <?php
 
-namespace CristianPeter\LaravelDisposableContactGuard;
+namespace Incentads\Disposable;
 
-use CristianPeter\LaravelDisposableContactGuard\Cache\HasCache;
-use CristianPeter\LaravelDisposableContactGuard\Utils\HandleStorage;
 use Illuminate\Contracts\Cache\Repository as Cache;
+use Incentads\Disposable\Cache\HasCache;
+use Incentads\Disposable\Utils\HandleStorage;
 use Psr\SimpleCache\InvalidArgumentException;
 
 class DisposableNumbers implements Disposable
 {
-    use HasCache;
     use HandleStorage;
+    use HasCache;
 
-    const string FALLBACK_LOCATION =  __DIR__ . '/../disposable_numbers.json';
+    public const string FALLBACK_LOCATION =  __DIR__ . '/../disposable_numbers.json';
 
     /**
      * The storage path to retrieve from and save to.
@@ -83,30 +83,30 @@ class DisposableNumbers implements Disposable
     /**
      * Checks whether the given email address' domain matches a disposable email service.
      *
-     * @param string $number
+     * @param string $item
      * @return bool
      */
-    public function isDisposable(string $number): bool
+    public function isDisposable(string $item): bool
     {
-        if (! $number) {
+        if ( ! $item) {
             return false;
         }
-        if (in_array($number, $this->numbers)) {
+        return (bool) (in_array($item, $this->numbers))
             // Domain is a matching root domain.
-            return true;
-        }
-        return false;
+
+
+        ;
     }
 
     /**
      * Checks whether the given email address' domain doesn't match a disposable email service.
      *
-     * @param string $number
+     * @param string $item
      * @return bool
      */
-    public function isNotDisposable(string $number): bool
+    public function isLegit(string $item): bool
     {
-        return ! $this->isDisposable($number);
+        return ! $this->isDisposable($item);
     }
 
     /**
@@ -117,7 +117,7 @@ class DisposableNumbers implements Disposable
      */
     public function isIndisposable(string $number): bool
     {
-        return $this->isNotDisposable($number);
+        return $this->isLegit($number);
     }
 
     /**
@@ -221,7 +221,15 @@ class DisposableNumbers implements Disposable
     }
 
     /**
-     * Merge the arrays and save result in cache
+     * Check if new domains were added to the blacklist
+     */
+    public function hasNewBlackListItem(): bool
+    {
+        return count(array_diff($this->getBlacklist(), $this->getNumbers()));
+    }
+
+    /**
+     * Merge the arrays and save a result in cache
      * @param array ...$arrays
      * @return array
      */
@@ -230,13 +238,5 @@ class DisposableNumbers implements Disposable
         $merged = array_merge(...$arrays);
         $this->saveToCache($this->cacheKey, $merged);
         return $merged;
-    }
-
-    /**
-     * Check if new domains was added to the blacklist
-     */
-    public function hasNewBlackListItem(): bool
-    {
-        return count(array_diff($this->getBlacklist(), $this->getNumbers()));
     }
 }

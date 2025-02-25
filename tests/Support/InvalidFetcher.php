@@ -1,6 +1,6 @@
 <?php
 
-namespace CristianPeter\LaravelDisposableContactGuard\Tests\Mail\Console;
+namespace Incentads\Disposable\Tests\Support;
 
 class InvalidFetcher
 {

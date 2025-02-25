@@ -1,9 +1,9 @@
 <?php
 
-use CristianPeter\LaravelDisposableContactGuard\Core\Phone\Nodes\NumcheckrAdaptorNode;
-use CristianPeter\LaravelDisposableContactGuard\Core\Phone\Nodes\StoragableListAdaptorNode;
-use CristianPeter\LaravelDisposableContactGuard\Fetcher\email\DefaultEmailFetcher;
-use CristianPeter\LaravelDisposableContactGuard\Fetcher\phone\DefaultPhoneFetcher;
+use Incentads\Disposable\Core\Phone\Nodes\NumcheckrAdaptorNode;
+use Incentads\Disposable\Core\Phone\Nodes\StoragableListAdaptorNode;
+use Incentads\Disposable\Fetcher\email\DefaultEmailFetcher;
+use Incentads\Disposable\Fetcher\phone\DefaultPhoneFetcher;
 
 return [
     'email' => [

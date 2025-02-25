@@ -1,12 +1,12 @@
 <?php
 
-namespace CristianPeter\LaravelDisposableContactGuard\Validation;
+namespace Incentads\Disposable\Validation;
 
-use CristianPeter\LaravelDisposableContactGuard\Core\Phone\PhoneDecisionNode;
+use Incentads\Disposable\Core\Phone\PhoneDecisionNode;
 use Exception;
 use Illuminate\Validation\Validator;
 
-class IndisposableNumber
+final class DisposableNumber
 {
     /**
      * Default error message.
@@ -25,7 +25,7 @@ class IndisposableNumber
      * @return bool
      * @throws Exception
      */
-    public function validate($attribute, $value, $parameters, $validator): bool
+    public function validate(string $attribute, mixed $value, array $parameters, Validator $validator): bool
     {
         return app(PhoneDecisionNode::class)->handle($value);
     }
