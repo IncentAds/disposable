@@ -1,6 +1,7 @@
 {
     "name": "incentads/disposable",
     "description": "Disposable email and phone number validator",
+    "license": "MIT",
     "keywords": [
         "laravel",
         "mail",
@@ -11,7 +12,6 @@
         "temporary",
         "validator"
     ],
-    "license": "MIT",
     "authors": [
         {
             "name": "Cristian Peter",
@@ -21,49 +21,60 @@
     "require": {
         "php": "^8.3",
         "ext-json": "*",
-        "illuminate/cache": "^10.0|^11.0|^12.0",
-        "illuminate/config": "^10.0|^11.0|^12.0",
-        "illuminate/contracts": "^10.0|^11.0|^12.0",
-        "illuminate/support": "^10.0|^11.0|^12.0",
-        "illuminate/console": "^10.0|^11.0|^12.0",
-        "illuminate/validation": "^10.0|^11.0|^12.0"
+        "illuminate/cache": "^10.0 || ^11.0 || ^12.0",
+        "illuminate/config": "^10.0 || ^11.0 || ^12.0",
+        "illuminate/console": "^10.0 || ^11.0 || ^12.0",
+        "illuminate/contracts": "^10.0 || ^11.0 || ^12.0",
+        "illuminate/support": "^10.0 || ^11.0 || ^12.0",
+        "illuminate/validation": "^10.0 || ^11.0 || ^12.0"
     },
     "require-dev": {
-        "mockery/mockery": "^1.4.2",
-        "orchestra/testbench": "*",
-        "phpunit/phpunit": "^10.5",
-        "laravel/pint": "^1.14",
         "barryvdh/laravel-ide-helper": "^3.1",
         "captainhook/captainhook-phar": "^5.24",
         "captainhook/hook-installer": "^1.0",
         "ergebnis/composer-normalize": "*",
         "larastan/larastan": "^2",
+        "laravel/pint": "^1.14",
+        "mockery/mockery": "^1.4.2",
+        "orchestra/testbench": "*",
+        "phpunit/phpunit": "^10.5",
         "ramsey/conventional-commits": "^1.5"
     },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "autoload": {
         "psr-4": {
             "Incentads\\Disposable\\": "src/",
             "Incentads\\Disposable\\Tests\\": "tests/"
         }
     },
-    "extra": {
-        "laravel": {
-            "providers": [
-              "Incentads\\Disposable\\DisposableServiceProvider"
-            ],
-            "aliases": {
-              "DisposableDomains": "Incentads\\Disposable\\Facades\\DisposableDomains",
-              "DisposableNumbers" : "Incentads\\Disposable\\Facades\\DisposableNumbers"
-            }
-        }
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "config": {
         "allow-plugins": {
-            "captainhook/hook-installer": true,
             "captainhook/captainhook-phar": true,
+            "captainhook/hook-installer": true,
             "ergebnis/composer-normalize": true
         }
+    },
+    "extra": {
+        "laravel": {
+            "aliases": {
+                "DisposableDomains": "Incentads\\Disposable\\Facades\\DisposableDomains",
+                "DisposableNumbers": "Incentads\\Disposable\\Facades\\DisposableNumbers"
+            },
+            "providers": [
+                "Incentads\\Disposable\\DisposableServiceProvider"
+            ]
+        }
+    },
+    "scripts": {
+        "coverage": "vendor/bin/phpunit --coverage-clover build/coverage.xml",
+        "lint": [
+            "./vendor/bin/pint --dirty"
+        ],
+        "lint-test": [
+            "./vendor/bin/pint --dirty --test"
+        ],
+        "phpstan": "vendor/bin/phpstan analyse -c phpstan.neon --memory-limit=4G",
+        "phpunit": "vendor/bin/phpunit --configuration ./phpunit.xml"
     }
 }

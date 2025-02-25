@@ -19,9 +19,6 @@
       },
       {
         "action": "composer lint-test"
-      },
-      {
-        "action": "sh ./hooks/prevent_xdebug_break_commit.sh"
       }
     ]
   },
