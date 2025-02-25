@@ -23,9 +23,9 @@ final readonly class PhoneDecisionNode
      * Evaluates all nodes in the configured order. If any node returns false, it returns false;
      * otherwise, it returns true.
      * @param mixed $state
-     * @return mixed
+     * @return bool
      */
-    private function resolve(mixed $state): mixed
+    private function resolve(mixed $state): bool
     {
         foreach ($this->nodes as $node) {
             try {
