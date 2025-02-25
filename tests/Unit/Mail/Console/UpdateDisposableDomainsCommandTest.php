@@ -1,8 +1,10 @@
 <?php
 
-namespace Incentads\Disposable\Tests\Mail\Console;
+namespace Incentads\Disposable\Tests\Unit\Mail\Console;
 
-use Incentads\Disposable\Tests\Mail\EmailTestCase;
+use Incentads\Disposable\Tests\EmailTestCase;
+use Incentads\Disposable\Tests\Support\CustomFetcher;
+use Incentads\Disposable\Tests\Support\InvalidFetcher;
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Test;
 

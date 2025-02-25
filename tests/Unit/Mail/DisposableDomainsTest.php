@@ -1,8 +1,9 @@
 <?php
 
-namespace Incentads\Disposable\Tests\Mail;
+namespace Incentads\Disposable\Tests\Unit\Mail;
 
 use Incentads\Disposable\DisposableDomains;
+use Incentads\Disposable\Tests\EmailTestCase;
 use Mockery;
 use PHPUnit\Framework\Attributes\Test;
 

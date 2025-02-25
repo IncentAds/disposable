@@ -1,6 +1,6 @@
 <?php
 
-namespace Incentads\Disposable\Tests\Mail\Console;
+namespace Incentads\Disposable\Tests\Support;
 
 class InvalidFetcher
 {

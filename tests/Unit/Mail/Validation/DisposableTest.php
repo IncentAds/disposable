@@ -1,8 +1,8 @@
 <?php
 
-namespace Incentads\Disposable\Tests\Mail\Validation;
+namespace Incentads\Disposable\Tests\Unit\Mail\Validation;
 
-use Incentads\Disposable\Tests\Mail\EmailTestCase;
+use Incentads\Disposable\Tests\EmailTestCase;
 use Incentads\Disposable\Validation\DisposableEmail;
 use PHPUnit\Framework\Attributes\Test;
 

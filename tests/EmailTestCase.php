@@ -1,12 +1,11 @@
 <?php
 
-namespace Incentads\Disposable\Tests\Mail;
+namespace Incentads\Disposable\Tests;
 
 use Illuminate\Foundation\Application;
 use Incentads\Disposable\DisposableDomains;
-use Incentads\Disposable\Tests\TestCase;
 
-abstract class EmailTestCase extends TestCase
+class EmailTestCase extends TestCase
 {
     /**
      * @var string
@@ -65,7 +64,7 @@ abstract class EmailTestCase extends TestCase
      */
     protected function getPackageAliases($app): array
     {
-        return ['Indisposable' => 'Incentads\Disposable\Facades\DisposableDomains'];
+        return ['Disposable' => 'Incentads\Disposable\Facades\DisposableDomains'];
     }
 
     /**

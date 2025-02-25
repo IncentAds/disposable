@@ -1,8 +1,8 @@
 <?php
 
-namespace Incentads\Disposable\Tests\Phone\Console;
+namespace Incentads\Disposable\Tests\Unit\Phone\Console;
 
-use Incentads\Disposable\Tests\Phone\PhoneTestCase;
+use Incentads\Disposable\Tests\PhoneTestCase;
 use PHPUnit\Framework\Attributes\Test;
 
 class UpdatePhoneNumbersCommandTest extends PhoneTestCase

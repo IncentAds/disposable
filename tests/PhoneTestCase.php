@@ -1,12 +1,11 @@
 <?php
 
-namespace Incentads\Disposable\Tests\Phone;
+namespace Incentads\Disposable\Tests;
 
 use Illuminate\Foundation\Application;
 use Incentads\Disposable\DisposableNumbers;
-use Incentads\Disposable\Tests\TestCase;
 
-abstract class PhoneTestCase extends TestCase
+class PhoneTestCase extends TestCase
 {
     /**
      * @var string
@@ -65,7 +64,7 @@ abstract class PhoneTestCase extends TestCase
      */
     protected function getPackageAliases($app): array
     {
-        return ['Indisposable' => 'Incentads\Disposable\Facades\DisposableNumbers'];
+        return ['Disposable' => 'Incentads\Disposable\Facades\DisposableNumbers'];
     }
 
     /**
