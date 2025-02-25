@@ -1,0 +1,6 @@
+includes:
+    - phpstan.neon.dist
+
+parameters:
+    # https://phpstan.org/user-guide/output-format#opening-file-in-an-editor
+    editorUrl: 'phpstorm://open?file=%%file%%&line=%%line%%'

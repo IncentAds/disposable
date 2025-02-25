@@ -1,15 +1,14 @@
 <?php
 
-namespace CristianPeter\LaravelDisposableContactGuard\Tests\Phone\Console;
+namespace Incentads\Disposable\Tests\Phone\Console;
 
-
-use CristianPeter\LaravelDisposableContactGuard\Tests\Phone\PhoneTestCase;
+use Incentads\Disposable\Tests\Phone\PhoneTestCase;
 use PHPUnit\Framework\Attributes\Test;
 
 class UpdatePhoneNumbersCommandTest extends PhoneTestCase
 {
     #[Test]
-    public function it_creates_the_file()
+    public function it_creates_the_file(): void
     {
         $this->assertFileDoesNotExist($this->storagePath);
 
@@ -24,7 +23,7 @@ class UpdatePhoneNumbersCommandTest extends PhoneTestCase
     }
 
     #[Test]
-    public function it_overwrites_the_file()
+    public function it_overwrites_the_file(): void
     {
         file_put_contents($this->storagePath, json_encode(['622134090']));
 

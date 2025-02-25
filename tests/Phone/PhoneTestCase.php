@@ -1,28 +1,17 @@
 <?php
 
-namespace CristianPeter\LaravelDisposableContactGuard\Tests\Phone;
+namespace Incentads\Disposable\Tests\Phone;
 
-use CristianPeter\LaravelDisposableContactGuard\DisposableNumbers;
-use CristianPeter\LaravelDisposableContactGuard\Tests\TestCase;
 use Illuminate\Foundation\Application;
+use Incentads\Disposable\DisposableNumbers;
+use Incentads\Disposable\Tests\TestCase;
 
 abstract class PhoneTestCase extends TestCase
 {
     /**
      * @var string
      */
-    protected string $storagePath = __DIR__.'/numbers.json';
-
-    /**
-     * Define environment setup.
-     *
-     * @param  Application  $app
-     * @return void
-     */
-    protected function getEnvironmentSetUp($app): void
-    {
-        $app['config']->set('disposable-guard.phone.storage', $this->storagePath);
-    }
+    protected string $storagePath = __DIR__ . '/numbers.json';
 
     /**
      * Set up the test environment.
@@ -47,6 +36,17 @@ abstract class PhoneTestCase extends TestCase
     }
 
     /**
+     * Define environment setup.
+     *
+     * @param  Application  $app
+     * @return void
+     */
+    protected function getEnvironmentSetUp($app): void
+    {
+        $app['config']->set('disposable.phone.storage', $this->storagePath);
+    }
+
+    /**
      * Package Service Providers
      *
      * @param  Application  $app
@@ -54,7 +54,7 @@ abstract class PhoneTestCase extends TestCase
      */
     protected function getPackageProviders($app): array
     {
-        return ['CristianPeter\LaravelDisposableContactGuard\DisposableServiceProvider'];
+        return ['Incentads\Disposable\DisposableServiceProvider'];
     }
 
     /**
@@ -65,7 +65,7 @@ abstract class PhoneTestCase extends TestCase
      */
     protected function getPackageAliases($app): array
     {
-        return ['Indisposable' => 'CristianPeter\LaravelDisposableContactGuard\Facades\DisposableNumbers'];
+        return ['Indisposable' => 'Incentads\Disposable\Facades\DisposableNumbers'];
     }
 
     /**

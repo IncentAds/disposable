@@ -1,6 +1,6 @@
 <?php
 
-namespace CristianPeter\LaravelDisposableContactGuard\Fetcher;
+namespace Incentads\Disposable\Fetcher;
 
 interface Fetcher
 {

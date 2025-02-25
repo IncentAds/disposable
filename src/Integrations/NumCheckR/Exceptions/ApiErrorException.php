@@ -1,8 +1,7 @@
 <?php
 
-namespace CristianPeter\LaravelDisposableContactGuard\Integrations\NumCheckR\Exceptions;
+namespace Incentads\Disposable\Integrations\NumCheckR\Exceptions;
 
-class ApiErrorException extends \Exception
-{
+use Exception;
 
-}
+class ApiErrorException extends Exception {}

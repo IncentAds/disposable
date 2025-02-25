@@ -1,8 +1,8 @@
 <?php
 
-namespace CristianPeter\LaravelDisposableContactGuard\Cache;
+namespace Incentads\Disposable\Cache;
 
-use CristianPeter\LaravelDisposableContactGuard\Utils\ArrayHelper;
+use Incentads\Disposable\Utils\ArrayHelper;
 use Psr\SimpleCache\InvalidArgumentException;
 
 trait HasCache

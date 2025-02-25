@@ -1,6 +1,6 @@
 <?php
 
-namespace CristianPeter\LaravelDisposableContactGuard\Facades;
+namespace Incentads\Disposable\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

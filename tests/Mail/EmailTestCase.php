@@ -1,28 +1,17 @@
 <?php
 
-namespace CristianPeter\LaravelDisposableContactGuard\Tests\Mail;
+namespace Incentads\Disposable\Tests\Mail;
 
-use CristianPeter\LaravelDisposableContactGuard\DisposableDomains;
-use CristianPeter\LaravelDisposableContactGuard\Tests\TestCase;
 use Illuminate\Foundation\Application;
+use Incentads\Disposable\DisposableDomains;
+use Incentads\Disposable\Tests\TestCase;
 
 abstract class EmailTestCase extends TestCase
 {
     /**
      * @var string
      */
-    protected string $storagePath = __DIR__.'/disposable_domains.json';
-
-    /**
-     * Define environment setup.
-     *
-     * @param  Application  $app
-     * @return void
-     */
-    protected function getEnvironmentSetUp($app): void
-    {
-        $app['config']->set('disposable-guard.email.storage', $this->storagePath);
-    }
+    protected string $storagePath = __DIR__ . '/disposable_domains.json';
 
     /**
      * Set up the test environment.
@@ -47,6 +36,17 @@ abstract class EmailTestCase extends TestCase
     }
 
     /**
+     * Define environment setup.
+     *
+     * @param  Application  $app
+     * @return void
+     */
+    protected function getEnvironmentSetUp($app): void
+    {
+        $app['config']->set('disposable.email.storage', $this->storagePath);
+    }
+
+    /**
      * Package Service Providers
      *
      * @param  Application  $app
@@ -54,7 +54,7 @@ abstract class EmailTestCase extends TestCase
      */
     protected function getPackageProviders($app): array
     {
-        return ['CristianPeter\LaravelDisposableContactGuard\DisposableServiceProvider'];
+        return ['Incentads\Disposable\DisposableServiceProvider'];
     }
 
     /**
@@ -65,7 +65,7 @@ abstract class EmailTestCase extends TestCase
      */
     protected function getPackageAliases($app): array
     {
-        return ['Indisposable' => 'CristianPeter\LaravelDisposableContactGuard\Facades\DisposableDomains'];
+        return ['Indisposable' => 'Incentads\Disposable\Facades\DisposableDomains'];
     }
 
     /**

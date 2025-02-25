@@ -1,0 +1,52 @@
+{
+  "commit-msg": {
+    "enabled": false,
+    "actions": [
+      {
+        "action": "\\Ramsey\\CaptainHook\\ValidateConventionalCommit"
+      }
+    ]
+  },
+  "pre-push": {
+    "enabled": false,
+    "actions": []
+  },
+  "pre-commit": {
+    "enabled": true,
+    "actions": [
+      {
+        "action": "composer normalize"
+      },
+      {
+        "action": "composer lint-test"
+      },
+      {
+        "action": "sh ./hooks/prevent_xdebug_break_commit.sh"
+      }
+    ]
+  },
+  "prepare-commit-msg": {
+    "enabled": false,
+    "actions": []
+  },
+  "post-commit": {
+    "enabled": false,
+    "actions": []
+  },
+  "post-merge": {
+    "enabled": false,
+    "actions": []
+  },
+  "post-checkout": {
+    "enabled": false,
+    "actions": []
+  },
+  "post-rewrite": {
+    "enabled": false,
+    "actions": []
+  },
+  "post-change": {
+    "enabled": false,
+    "actions": []
+  }
+}

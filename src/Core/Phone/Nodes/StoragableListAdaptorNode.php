@@ -1,8 +1,8 @@
 <?php
 
-namespace CristianPeter\LaravelDisposableContactGuard\Core\Phone\Nodes;
+namespace Incentads\Disposable\Core\Phone\Nodes;
 
-use CristianPeter\LaravelDisposableContactGuard\Facades\DisposableNumbers;
+use Incentads\Disposable\Facades\DisposableNumbers;
 
 class StoragableListAdaptorNode implements PhoneAdaptorNode
 {

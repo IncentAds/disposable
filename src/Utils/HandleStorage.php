@@ -1,22 +1,9 @@
 <?php
 
-namespace CristianPeter\LaravelDisposableContactGuard\Utils;
+namespace Incentads\Disposable\Utils;
 
 trait HandleStorage
 {
-    /**
-     * Get the domains from storage, or if non-existent, from the package.
-     *
-     * @return array
-     */
-    protected function getFromStorage(): array
-    {
-        $items = is_file($this->getStoragePath())
-            ? file_get_contents($this->getStoragePath())
-            : file_get_contents(self::FALLBACK_LOCATION);
-        $items = array_diff(json_decode($items), $this->getWhitelist());
-        return ArrayHelper::combineKeysValues($items) ?: [];
-    }
     /**
      * Save the domains in storage.
      */
@@ -40,5 +27,18 @@ trait HandleStorage
         if (is_file($this->getStoragePath())) {
             @unlink($this->getStoragePath());
         }
+    }
+    /**
+     * Get the domains from storage, or if non-existent, from the package.
+     *
+     * @return array
+     */
+    protected function getFromStorage(): array
+    {
+        $items = is_file($this->getStoragePath())
+            ? file_get_contents($this->getStoragePath())
+            : file_get_contents(self::FALLBACK_LOCATION);
+        $items = array_diff(json_decode($items), $this->getWhitelist());
+        return ArrayHelper::combineKeysValues($items) ?: [];
     }
 }

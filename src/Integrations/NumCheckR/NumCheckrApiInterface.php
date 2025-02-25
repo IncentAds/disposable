@@ -1,13 +1,15 @@
 <?php
 
-namespace CristianPeter\LaravelDisposableContactGuard\Integrations\NumCheckR;
+namespace Incentads\Disposable\Integrations\NumCheckR;
 
-use CristianPeter\LaravelDisposableContactGuard\Integrations\NumCheckR\Dto\NumCheckrDto;
+use Incentads\Disposable\Integrations\NumCheckR\Dto\NumCheckrDto;
 
 interface NumCheckrApiInterface
 {
     public function info(string $number): NumCheckrDto;
 
     public function isNotDisposable(string $number): bool;
+
+    public function isDisposable(string $number): bool;
 
 }

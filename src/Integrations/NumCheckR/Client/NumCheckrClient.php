@@ -1,14 +1,13 @@
 <?php
 
-namespace CristianPeter\LaravelDisposableContactGuard\Integrations\NumCheckR\Client;
+namespace Incentads\Disposable\Integrations\NumCheckR\Client;
 
-use CristianPeter\LaravelDisposableContactGuard\Integrations\NumCheckR\Exceptions\ApiErrorException;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
-use RuntimeException;
+use Incentads\Disposable\Integrations\NumCheckR\Exceptions\ApiErrorException;
 
 class NumCheckrClient implements NumCheckrClientInterface
 {
@@ -18,9 +17,10 @@ class NumCheckrClient implements NumCheckrClientInterface
     private string $url;
     private string $apiKey;
 
-    public function __construct() {
-        $this->url = mb_trim(config('disposable-guard.phone.integrations.numcheckr.url'));
-        $this->apiKey = config('disposable-guard.phone.integrations.numcheckr.api_key');
+    public function __construct()
+    {
+        $this->url = mb_trim(config('disposable.phone.integrations.numcheckr.url'));
+        $this->apiKey = config('disposable.phone.integrations.numcheckr.api_key');
     }
 
     /**
@@ -29,7 +29,7 @@ class NumCheckrClient implements NumCheckrClientInterface
      */
     public function post(array $data): array
     {
-       return $this->send('post', $this->url ,$data);
+        return $this->send('post', $this->url, $data);
     }
 
     /**
@@ -38,7 +38,7 @@ class NumCheckrClient implements NumCheckrClientInterface
      */
     public function isDisposable(string $number): bool
     {
-        return $this->send('post', $this->url , ['phone' => $number])['is_disposable'];
+        return $this->send('post', $this->url, ['phone' => $number])['is_disposable'];
     }
 
     /**

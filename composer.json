@@ -1,6 +1,6 @@
 {
-    "name": "cristianpeter/laravel-disposable-contact-guard",
-    "description": "Disposable email validator",
+    "name": "incentads/disposable",
+    "description": "Disposable email and phone number validator",
     "keywords": [
         "laravel",
         "mail",
@@ -21,32 +21,49 @@
     "require": {
         "php": "^8.3",
         "ext-json": "*",
-        "illuminate/cache": "^10.0|^11.0",
-        "illuminate/config": "^10.0|^11.0",
-        "illuminate/contracts": "^10.0|^11.0",
-        "illuminate/support": "^10.0|^11.0",
-        "illuminate/console": "^10.0|^11.0",
-        "illuminate/validation": "^10.0|^11.0"
+        "illuminate/cache": "^10.0|^11.0|^12.0",
+        "illuminate/config": "^10.0|^11.0|^12.0",
+        "illuminate/contracts": "^10.0|^11.0|^12.0",
+        "illuminate/support": "^10.0|^11.0|^12.0",
+        "illuminate/console": "^10.0|^11.0|^12.0",
+        "illuminate/validation": "^10.0|^11.0|^12.0"
     },
     "require-dev": {
         "mockery/mockery": "^1.4.2",
         "orchestra/testbench": "*",
         "phpunit/phpunit": "^10.5",
-        "laravel/pint": "^1.14"
+        "laravel/pint": "^1.14",
+        "barryvdh/laravel-ide-helper": "^3.1",
+        "captainhook/captainhook-phar": "^5.24",
+        "captainhook/hook-installer": "^1.0",
+        "ergebnis/composer-normalize": "*",
+        "larastan/larastan": "^2",
+        "ramsey/conventional-commits": "^1.5"
     },
     "autoload": {
         "psr-4": {
-            "CristianPeter\\LaravelDisposableContactGuard\\": "src/",
-            "CristianPeter\\LaravelDisposableContactGuard\\Tests\\": "tests/"
+            "Incentads\\Disposable\\": "src/",
+            "Incentads\\Disposable\\Tests\\": "tests/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-              "CristianPeter\\LaravelDisposableContactGuard\\DisposableServiceProvider"
-            ]
+              "Incentads\\Disposable\\DisposableServiceProvider"
+            ],
+            "aliases": {
+              "DisposableDomains": "Incentads\\Disposable\\Facades\\DisposableDomains",
+              "DisposableNumbers" : "Incentads\\Disposable\\Facades\\DisposableNumbers"
+            }
         }
     },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "config": {
+        "allow-plugins": {
+            "captainhook/hook-installer": true,
+            "captainhook/captainhook-phar": true,
+            "ergebnis/composer-normalize": true
+        }
+    }
 }

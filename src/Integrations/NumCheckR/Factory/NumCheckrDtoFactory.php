@@ -1,12 +1,13 @@
 <?php
 
-namespace CristianPeter\LaravelDisposableContactGuard\Integrations\NumCheckR\Factory;
+namespace Incentads\Disposable\Integrations\NumCheckR\Factory;
 
-use CristianPeter\LaravelDisposableContactGuard\Integrations\NumCheckR\Dto\NumCheckrDto;
+use Incentads\Disposable\Integrations\NumCheckR\Dto\NumCheckrDto;
 
 class NumCheckrDtoFactory
 {
-    public function createFromResponse(array $data): NumCheckrDto{
+    public function createFromResponse(array $data): NumCheckrDto
+    {
         return new NumCheckrDto(
             $data['is_valid'],
             $data['is_disposable'],
@@ -16,7 +17,7 @@ class NumCheckrDtoFactory
             $data['carrier'],
             $data['e164_format'],
             $data['national_format'],
-            $data['international_format']
+            $data['international_format'],
         );
 
     }

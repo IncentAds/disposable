@@ -1,6 +1,6 @@
 <?php
 
-namespace CristianPeter\LaravelDisposableContactGuard\Core\Phone\Nodes;
+namespace Incentads\Disposable\Core\Phone\Nodes;
 
 interface PhoneAdaptorNode
 {

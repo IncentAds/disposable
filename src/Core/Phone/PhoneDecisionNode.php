@@ -1,14 +1,13 @@
 <?php
 
-namespace CristianPeter\LaravelDisposableContactGuard\Core\Phone;
+namespace Incentads\Disposable\Core\Phone;
 
+use Exception;
 use Illuminate\Support\Facades\Log;
 
 final readonly class PhoneDecisionNode
 {
-    public function __construct(private array $nodes)
-    {
-    }
+    public function __construct(private array $nodes) {}
 
     /**
      * Entry point for starting calling nodes
@@ -30,10 +29,10 @@ final readonly class PhoneDecisionNode
     {
         foreach ($this->nodes as $node) {
             try {
-                if (!$node->isNotDisposable($state)) {
+                if ( ! $node->isNotDisposable($state)) {
                     return false;
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 Log::error("Error on node: " . get_class($node), ['exception' => $e]);
             }
         }
