@@ -8,6 +8,6 @@ class StoragableListAdaptorNode implements PhoneAdaptorNode
 {
     public function isNotDisposable(mixed $number): bool
     {
-        return DisposableNumbers::isNotDisposable($number);
+        return DisposableNumbers::isLegit($number);
     }
 }
