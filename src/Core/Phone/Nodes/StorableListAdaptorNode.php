@@ -4,10 +4,10 @@ namespace Incentads\Disposable\Core\Phone\Nodes;
 
 use Incentads\Disposable\Facades\DisposableNumbers;
 
-class StoragableListAdaptorNode implements PhoneAdaptorNode
+class StorableListAdaptorNode implements PhoneAdaptorNode
 {
     public function isNotDisposable(mixed $number): bool
     {
-        return DisposableNumbers::isNotDisposable($number);
+        return DisposableNumbers::isLegit($number);
     }
 }

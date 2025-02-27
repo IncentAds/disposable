@@ -1,7 +1,7 @@
 <?php
 
 use Incentads\Disposable\Core\Phone\Nodes\NumcheckrAdaptorNode;
-use Incentads\Disposable\Core\Phone\Nodes\StoragableListAdaptorNode;
+use Incentads\Disposable\Core\Phone\Nodes\StorableListAdaptorNode;
 use Incentads\Disposable\Fetcher\email\DefaultEmailFetcher;
 use Incentads\Disposable\Fetcher\phone\DefaultPhoneFetcher;
 
@@ -40,11 +40,11 @@ return [
             'numcheckr' =>  [
                 'url' => env('NUMCHECKR_URL', 'https://numcheckr.com/api/check-number'),
                 'api_key' => env('NUMCHECKR_API_KEY', ''),
-            ]
-        ]
+            ],
+        ],
     ],
     'nodes' => [
-        StoragableListAdaptorNode::class,
+        StorableListAdaptorNode::class,
         NumcheckrAdaptorNode::class,
     ],
 

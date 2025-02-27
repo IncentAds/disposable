@@ -91,11 +91,8 @@ class DisposableNumbers implements Disposable
         if ( ! $item) {
             return false;
         }
-        return (bool) (in_array($item, $this->numbers))
-            // Domain is a matching root domain.
 
-
-        ;
+        return in_array($item, $this->numbers);
     }
 
     /**
@@ -110,12 +107,12 @@ class DisposableNumbers implements Disposable
     }
 
     /**
-     * Alias of "isNotDisposable".
+     * Alias of "isLegit".
      *
      * @param string $number
      * @return bool
      */
-    public function isIndisposable(string $number): bool
+    public function isNotDisposable(string $number): bool
     {
         return $this->isLegit($number);
     }
